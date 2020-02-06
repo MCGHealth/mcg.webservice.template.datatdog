@@ -1,5 +1,7 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using Datadog.Trace.OpenTracing;
 using Microsoft.Extensions.DependencyInjection;
+using OpenTracing;
+using OpenTracing.Util;
 
 namespace Mcg.Webservice.Api.Infrastructure.Tracing
 {
@@ -8,40 +10,13 @@ namespace Mcg.Webservice.Api.Infrastructure.Tracing
 	/// </summary>
 	public static class TracingServicesExtension
     {
-        //public static void AddDistributedTracing(this IServiceCollection services, IConfiguration configuration)
-        //{
-        //    // services.AddOpenTracing(builder =>
-        //    // {
-        //    //     builder.ConfigureAspNetCore(options =>
-        //    //     {
-        //    //         options.Hosting.IgnorePatterns.Add(x =>
-        //    //         {
-        //    //             return (
-        //    //                 x.Request.Path == "/swagger" ||
-        //    //                 x.Request.Path == "/swagger/index.html" ||
-        //    //                 x.Request.Path == "/swagger/favicon-16x16.png" ||
-        //    //                 x.Request.Path == "/swagger/v1/swagger.json" ||
-        //    //                 x.Request.Path == "/ops/metrics" ||
-        //    //                 x.Request.Path == "/ops/health"
-        //    //             );
-        //    //         });
-        //    //     });
-        //    // });
+		public static void AddDistributedTracing(this IServiceCollection services)
+		{
+			ITracer tracer = OpenTracingTracerFactory.CreateTracer();
 
-        //    // ILoggerFactory loggerFactory = services.BuildServiceProvider().GetRequiredService<ILoggerFactory>();
+			services.AddSingleton<ITracer>(tracer);
 
-        //    // return services.AddSingleton(serviceProvider =>
-        //    // {
-        //    //     var config = Jaeger.Configuration.FromIConfiguration( loggerFactory, configuration);
-        //    //     var tracer = config.GetTracer();
-
-        //    //     if (!GlobalTracer.IsRegistered())
-        //    //     {
-        //    //         GlobalTracer.Register(tracer);
-        //    //     }
-
-        //    //     return tracer;
-        //    // });
-        //}
-    }
+			GlobalTracer.Register(tracer);
+		}
+	}
 }

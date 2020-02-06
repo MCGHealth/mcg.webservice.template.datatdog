@@ -4,6 +4,7 @@ using Mcg.Webservice.Api.Infrastructure.Configuration;
 using Mcg.Webservice.Api.Infrastructure.HealthChecks;
 using Mcg.Webservice.Api.Infrastructure.Instrumentation;
 using Mcg.Webservice.Api.Infrastructure.Logging;
+using Mcg.Webservice.Api.Infrastructure.Tracing;
 using Mcg.Webservice.Api.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
@@ -33,7 +34,7 @@ namespace Mcg.Webservice.Api
             services.AddTransient<IExampleBusinessService, ExampleBusinessService>();
 
             services.AddServiceHealthChecks();
-            //services.AddDistributedTracing(Configuration);
+            services.AddDistributedTracing();
             services.AddSwaggerDocumentation();
         }
 
