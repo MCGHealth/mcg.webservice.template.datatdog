@@ -1,6 +1,6 @@
 # Mcg.Webservice.Template.DataDog
 
-At MCG we continue to explore our options for monitoring our cloud applications.  We have several legacy applications that already use DataDog, so we felt it is prudent to see how it could fit our needs going forward.  Services like DataDog make it easy to parse logs, setup dashboards, alerts, synthetics, etc..  The alure of such a service is that we have less infrastructure to maintain, i.e., the services and containers that are required to run Jaeger, Kibana, Grafana, and so on.
+At MCG we continue to explore our options for monitoring our cloud applications.  We have several legacy applications that already use DataDog, so we felt it is prudent to see how it could fit our needs going forward.  Services like DataDog make it easy to parse logs, setup dashboards, alerts, synthetics, etc..  The allure of such a service is that we have less infrastructure to maintain, i.e., the services and containers that are required to run Jaeger, Kibana, Grafana, and so on.
 
 This template uses much of the same basic CNCF technology as the [Mcg.Webservice.Template.Cncf](https://github.com/MCGHealth/mcg.webservice.template.cncf).  The big difference is that instead of using the aformentioned services, the information is sent to DataDog.
 
