@@ -1,0 +1,43 @@
+version: "3"
+
+networks: 
+  svc_network:
+    driver: "bridge"
+
+services:
+
+  datadog-agent:
+    image: datadog/agent:latest
+    container_name: datadog-agent
+    hostname: datadog-agent
+    networks: 
+      - svc_network
+    environment:
+      - DD_API_KEY=8b0c6b447d120c57779661391a39abd2
+      - DD_LOGS_ENABLED=true
+      - DD_LOGS_CONFIG_CONTAINER_COLLECT_ALL=true
+      - DD_AC_EXCLUDE="name:datadog-agent"
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock:ro"
+      - "/proc/:/host/proc/:ro"
+      - "/Volumes/datadog-agent/run:/opt/datadog-agent/run:rw"
+      - "/sys/fs/cgroup/:/host/sys/fs/cgroup:ro"
+    depends_on:
+      - netcore-svc
+
+  netcore-svc:
+    build: Mcg.Webservice.Api/.
+    container_name: netcore-svc
+    hostname: netcore-svc
+    networks: 
+      - svc_network
+    ports:
+      - "8080:80"
+    environment:
+      - APP_ASPNETCORE_ENVIRONMENT=Development
+      - APP_LOG_LEVEL=verbose
+      - APP_CORS_ALLOWED_URLS=*
+    labels:
+      com.datadoghq.ad.check_names: '["openmetrics"]'
+      com.datadoghq.ad.init_configs: '[{}]'
+      com.datadoghq.ad.instances: '[{"prometheus_url":"http://%%host%%:80/ops/metrics","namespace":"_","metrics":["mcg_webservice_api*"]}]'
