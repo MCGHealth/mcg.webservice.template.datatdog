@@ -54,13 +54,13 @@ choco install make
 1. Clone the repository into a location of your choice:
 
    ```shell
-   git clone https://github.com/jeremyj01/mcg.webservice.template.cncf.git
+   git clone https://github.com/MCGHealth/mcg.webservice.template.datatdog.git
    ```
 
 2. Navigate to the template directory:
 
    ```shell
-   cd mcg.webservice.template.cncf/template
+   cd mcg.webservice.template.datadog/template
    ```
 
 3. Run the following command:
@@ -93,64 +93,13 @@ For example, the following command will create a new soltion named "Acme.Example
 dotnet new mcgcncf -o Acme.Example -n Acme.Example
 ```
 
-The directory structure will look like this:
-
-```shell
-<your dir>\Acme.Example
-├───Acme.Example.Api
-│   ├───Connected Services
-│   │   └───Application Insights
-│   ├───Controllers
-│   ├───DataAccess
-│   ├───Infrastructure
-│   │   ├───Configuration
-│   │   ├───DependencyTracking
-│   │   ├───HealthChecks
-│   │   ├───Logging
-│   │   └───Metrics
-│   ├───Models
-│   ├───Properties
-│   └───Services
-└───Acme.Example.UnitTests
-    ├───ControllerTests
-    ├───InfrastructureTests
-    │   ├───ConfigurationTests
-    │   ├───HealthCheckTests
-    │   └───MetricsTests
-    ├───MessagingTests
-    └───ModelTests
-```
-
----
-
 ## Run the solution
 
-From the terminal run the command `make run`. You should see the following output:
+From the terminal run the command `docker-compose up --build`. 
 
-```shell
-make run
-dotnet build Acme.Example.sln -c Debug --force --nologo
-  Restore completed in 380.78 ms for /Users/.../Acme.Example.UnitTests/Acme.Example.UnitTests.csproj.
-  Restore completed in 380.78 ms for /Users/.../Acme.Example.Api/Acme.Example.Api.csproj.
-  Acme.Example.Api -> /Users/.../Acme.Example.Api/bin/Debug/netcoreapp3.0/Acme.Example.Api.dll
-  Acme.Example.UnitTests -> /Users/.../Acme.Example.UnitTests/bin/Debug/netcoreapp3.0/Acme.Example.UnitTests.dll
+Once the service is running, open a browser of your choice and navigate to [http://localhost:8080/swagger](http://localhost:8080/swagger). Without writing any code, you should have a working app right out of the gate:
 
-Build succeeded.
-    0 Warning(s)
-    0 Error(s)
-
-Time Elapsed 00:00:01.33
-dotnet run -p Acme.Example.Api/Acme.Example.Api.csproj
-[13:20:29 INF] Initialized Tracer(ServiceName=Mcg.Webservice, Version=CSharp-0.3.6.0, Reporter=RemoteReporter(Sender=UdpSender(UdpTransport=ThriftUdpClientTransport(Client=127.0.0.1:6831))), Sampler=ConstSampler(True), IPv4=167772263, Tags=[jaeger.version, CSharp-0.3.6.0], [hostname, Slartibartfast.local], [ip, 10.0.0.103], ZipkinSharedRpcSpan=False, ExpandExceptionLogs=False, UseTraceId128Bit=False)
-[13:20:30 INF] Now listening on: http://localhost:5000
-[13:20:30 INF] Application started. Press Ctrl+C to shut down.
-[13:20:30 INF] Hosting environment: Production
-[13:20:30 INF] Content root path: /Users/.../Acme.Example.Api
-```
-
-Open a browser of your choice and navigate to [http://localhost:5000/swagger](http://localhost:5000/swagger). Without writing any code, you should have a working app right out of the gate:
-
-![http://localhost:5000/swagger](img/swagger-example.png)
+![http://localhost:8080/swagger](img/swagger-example.png)
 
 Happy Coding!
 

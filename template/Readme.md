@@ -1,4 +1,4 @@
-﻿# Mcg.Webservice.Cncf Solution
+﻿# Mcg.Webservice.Api Solution
 
 ## Prerequisites (Windows Only)
 
