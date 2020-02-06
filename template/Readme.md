@@ -48,7 +48,6 @@
 | **[Mcg.Webservice.Cncf.UnitTests](./Mcg.Webservice.Cncf.UnitTests/Readme.md)** | This project, as the name suggests, are the **_unit tests_** for the project.                                                   |
 | [Makefile](./Makefile)                                                               | This file contains several commandline make command to make compiling, testing, and running the solution easier.                |
 | [docker-compose.yml](./docker-compose.yml)                                           | Invoke `docker-compose up` in the solution root to launch the solution in a container along with the other supporting services. |
-| [prometheus.yml](./prometheus.yml)                                                   | Configures prometheus to be able to access the container running the web service.                                               |
 |                                                                                      |                                                                                                                                 |
 
 ## Make Commands
@@ -62,7 +61,6 @@
 | `make run`     | Cleans, restores, and builds a binary.                                                                        |
 | `make test`    | Cleans, restores, builds, and executes the unit tests.                                                        |
 | `make publish` | Publishes a binary build for musl (Alpine) linux                                                              |
-| `make docker`  | Creates a docker image and calls a docker-compose file to start up all supporting services and the container. |
 |                |                                                                                                               |
 
  :warning: On Mac you may need to use **`gmake`** instead of **`make`**
