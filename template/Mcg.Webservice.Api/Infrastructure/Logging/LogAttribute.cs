@@ -22,7 +22,7 @@ namespace Mcg.Webservice.Api.Infrastructure.Logging
 	[Aspect(Scope.Global, Factory = typeof(AspectFactory))]
 	public class LogAspect
 	{
-		internal const string INF_LOG_TEMPLATE = "{event} {host_name} {process_name} {elapsed_\u03BCs:0.0000} {method}";
+		internal const string INF_LOG_TEMPLATE = "{host_name} {process_name} {type_name} {method} {elapsed_\u03BCs:0.0000} ";
 		internal const string ERR_LOG_TEMPLATE = INF_LOG_TEMPLATE + " {arguments} {error_type} {error_message} {error_stack_trace}";
 
 		internal static ILogger Log { get; set; } = Serilog.Log.Logger;
@@ -36,76 +36,82 @@ namespace Mcg.Webservice.Api.Infrastructure.Logging
 		private static T Wrap<T>(string owningTypeName, string targetName, Func<object[], object> target, object[] args)
 		{
 			var sw = Stopwatch.StartNew();
-			Exception ex = null;
 
 			try
 			{
-				return (T)target(args);
+				var result = (T)target(args);
+				WriteInformation(owningTypeName, targetName, sw.ElapsedTicks);
+				return result;
 			}
 			catch (Exception e)
 			{
-				ex = GetRootException(e);
+				var ex = GetRootException(e);
+				WriteError(owningTypeName, targetName, args, sw.ElapsedTicks, ex);
 				throw;
-			}
-			finally
-			{
-				Write(owningTypeName, targetName, args, sw.ElapsedTicks, ex);
 			}
 		}
 
 		private static async Task<T> WrapAsync<T>(string owningTypeName, string targetName, Func<object[], object> target, object[] args)
 		{
 			var sw = Stopwatch.StartNew();
-			Exception ex = null;
 
 			try
 			{
 				var result = await (Task<T>)target(args);
+				WriteInformation(owningTypeName, targetName, sw.ElapsedTicks);
 				return result;
 			}
 			catch (Exception e)
 			{
-				ex = GetRootException(e);
+				var ex = GetRootException(e);
+				WriteError(owningTypeName, targetName, args, sw.ElapsedTicks, ex);
 				throw;
-			}
-			finally
-			{
-				Write(owningTypeName, targetName, args, sw.ElapsedTicks, ex);
 			}
 		}
 
-		private static void Write(string owningTypeName, string methodName, object[] args, long duration, Exception exception = null)
+		private static void WriteInformation(string owningTypeName, string methodName, long duration)
 		{
-			var eventName = $"{owningTypeName}_{methodName}".SafeString();
-			double elapsed = (double)duration / AspectFactory.TickPerMicrosecond;
-
-			if (exception != null)
+			if (methodName.Contains("_around_"))
 			{
-				Log.Error(
-					ERR_LOG_TEMPLATE
-					, eventName
-					, Environment.MachineName
-					, AppSettings.ServiceName
-					, elapsed
-					, methodName
-					, JsonConvert.SerializeObject(args)
-					, exception.GetType().FullName
-					, exception.Message
-					, HttpUtility.JavaScriptStringEncode(exception.StackTrace)
-				);
-
 				return;
 			}
 
+			double elapsed = (double)duration / AspectFactory.TickPerMicrosecond;
+
 			Log.Information(
 				INF_LOG_TEMPLATE
-				, eventName
 				, Environment.MachineName
 				, AppSettings.ServiceName
-				, elapsed
+				, owningTypeName
 				, methodName
-				, JsonConvert.SerializeObject(args)
+				, elapsed
 			);
+		}
+
+		private static void WriteError(string owningTypeName, string methodName, object[] args, long duration, Exception exception)
+		{
+			if (methodName.Contains("_around_"))
+			{
+				return;
+			}
+
+			double elapsed = (double)duration / AspectFactory.TickPerMicrosecond;
+
+			Log.Error(
+				ERR_LOG_TEMPLATE
+				, Environment.MachineName
+				, AppSettings.ServiceName
+				, owningTypeName
+				, methodName
+				, elapsed
+				, HttpUtility.JavaScriptStringEncode(JsonConvert.SerializeObject(args))
+				, exception.GetType().FullName
+				, exception.Message
+				, HttpUtility.JavaScriptStringEncode(exception.StackTrace)
+			);
+
+			return;
+
 		}
 
 		internal static Exception GetRootException(Exception ex)

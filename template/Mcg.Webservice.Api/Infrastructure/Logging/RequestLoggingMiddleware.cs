@@ -60,6 +60,12 @@ namespace Mcg.Webservice.Api.Infrastructure.Logging
 
         public async Task InvokeAsync(HttpContext context)
         {
+			if (!context.Request.Path.StartsWithSegments("/api"))
+			{
+                await Next(context);
+                return;
+            }
+
             var stopWatch = System.Diagnostics.Stopwatch.StartNew();
 
             context.Request.EnableBuffering();

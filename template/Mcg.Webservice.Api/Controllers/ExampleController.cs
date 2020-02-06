@@ -34,6 +34,7 @@ namespace Mcg.Webservice.Api.Controllers
         [ProducesResponseType(typeof(string), 502)] // upstream resource isn't available...ref https://tools.ietf.org/html/rfc2616?spm=5176.doc32013.2.3.Aimyd7#section-10.5.3
         public IActionResult Get()
         {
+            System.Threading.Thread.Sleep(200);
             var result = Logic.SelectAll();
             return Ok(result);
         }

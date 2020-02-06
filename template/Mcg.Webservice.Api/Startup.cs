@@ -4,7 +4,6 @@ using Mcg.Webservice.Api.Infrastructure.Configuration;
 using Mcg.Webservice.Api.Infrastructure.HealthChecks;
 using Mcg.Webservice.Api.Infrastructure.Instrumentation;
 using Mcg.Webservice.Api.Infrastructure.Logging;
-using Mcg.Webservice.Api.Infrastructure.Tracing;
 using Mcg.Webservice.Api.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
@@ -25,7 +24,8 @@ namespace Mcg.Webservice.Api
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllers();
+            services.AddControllers()
+                .AddNewtonsoftJson();
 
             services.AddSingleton<IAppSettings, AppSettings>();
             services.AddSingleton<IAppMetrics, AppMetrics>();
@@ -42,25 +42,28 @@ namespace Mcg.Webservice.Api
             AspectFactory.Metrics = app.ApplicationServices.GetService<IAppMetrics>();
             AspectFactory.Settings = app.ApplicationServices.GetService<IAppSettings>();
 
-            app.UseRouting();
+			app.UseRequestLogging();
+
+			app.UseRouting();
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
             });
 
-            app.UseSwaggerDocumentation();
-            app.UseServiceHealthChecks();
-
-            app.UseWhen(context => context.Request.Path.StartsWithSegments("/api"), appBuilder =>
+            app.MapWhen(context => context.Request.Path.StartsWithSegments("/api"), appBuilder =>
             {
                 appBuilder.UseRequestLogging();
             });
+
+            app.UseSwaggerDocumentation();
+            app.UseServiceHealthChecks();
 
             //--> see https://github.com/prometheus-net/prometheus-net/blob/master/README.md for more details
             app.UseMetricServer(url: "/ops/metrics");
             app.UseHttpMetrics();
 
-            app.UseCors(options =>
+
+			app.UseCors(options =>
             {
                 /************************************************************************
                  * WARNING!!! The development configuration is set to '*' and should NOT
