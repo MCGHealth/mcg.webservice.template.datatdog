@@ -18,7 +18,10 @@ LABEL "com.datadoghq.ad.instances"='[{"prometheus_url":"http://%%host%%:80/ops/m
 
 ENV APP_ASPNETCORE_ENVIRONMENT=Development \
 	APP_LOG_LEVEL=verbose \
-	APP_CORS_ALLOWED_URLS=*
+	APP_CORS_ALLOWED_URLS=* \
+	DD_TRACE_ANALYTICS_ENABLED=true \
+	DD_AGENT_HOST=datadog-agent \
+	DD_TRACE_AGENT_PORT=8126
 
 WORKDIR /app
 EXPOSE 80

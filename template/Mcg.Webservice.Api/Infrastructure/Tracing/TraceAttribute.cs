@@ -55,21 +55,21 @@ namespace Mcg.Webservice.Api.Infrastructure.Tracing
 
         private static T WrapSync<T>(string eventName, Func<object[], object> target, object[] args)
         {
-            // ITracer tracer = GlobalTracer.Instance;
+			ITracer tracer = GlobalTracer.Instance;
 
-            // using IScope scope = tracer.BuildSpan(eventName)
-            //     .WithTag("machine", Environment.MachineName)
-            //     .WithTag(Tags.Component.Key, AppSettings.ServiceName)
-            //     .StartActive(true);
-            try
+			using IScope scope = tracer.BuildSpan(eventName)
+				.WithTag("machine", Environment.MachineName)
+				.WithTag(Tags.Component.Key, AppSettings.ServiceName)
+				.StartActive(true);
+			try
             {
                 var result = (T)target(args);
                 return result;
             }
             catch
             {
-                // Tags.Error.Set(scope.Span, true);
-                throw;
+				Tags.Error.Set(scope.Span, true);
+				throw;
             }
         }
 
@@ -77,19 +77,19 @@ namespace Mcg.Webservice.Api.Infrastructure.Tracing
         {
             ITracer tracer = GlobalTracer.Instance;
 
-            // using IScope scope = tracer.BuildSpan(eventName)
-            //     .WithTag("machine", Environment.MachineName)
-            //     .WithTag(Tags.Component.Key, AppSettings.ServiceName)
-            //     .StartActive(true);
-            try
+			using IScope scope = tracer.BuildSpan(eventName)
+				.WithTag("machine", Environment.MachineName)
+				.WithTag(Tags.Component.Key, AppSettings.ServiceName)
+				.StartActive(true);
+			try
             {
                 var result = await (Task<T>)target(args);
                 return result;
             }
             catch
             {
-                //Tags.Error.Set(scope.Span, true);
-                throw;
+				Tags.Error.Set(scope.Span, true);
+				throw;
             }
         }
     }

@@ -1,5 +1,6 @@
 ﻿using System;
 using Mcg.Webservice.Api.Infrastructure.Configuration;
+using Mcg.Webservice.Api.Infrastructure.Tracing;
 using Mcg.Webservice.Api.Models;
 using Mcg.Webservice.Api.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -26,6 +27,7 @@ namespace Mcg.Webservice.Api.Controllers
             this.Settings = settings ?? throw new ArgumentNullException(nameof(settings));
         }
 
+        [Trace]
         [HttpGet]
         [ProducesResponseType(typeof(string), 200)] // ok
         [ProducesResponseType(typeof(string), 400)] // bad request
@@ -39,6 +41,7 @@ namespace Mcg.Webservice.Api.Controllers
             return Ok(result);
         }
 
+        [Trace]
         [HttpGet("id/{id}")]
         [ProducesResponseType(typeof(string), 200)] // ok
         [ProducesResponseType(typeof(string), 400)] // bad request
@@ -63,6 +66,7 @@ namespace Mcg.Webservice.Api.Controllers
             return Ok(r);
         }
 
+        [Trace]
         [HttpGet("email/{email}")]
         [ProducesResponseType(typeof(string), 200)] // ok
         [ProducesResponseType(typeof(string), 400)] // bad request
@@ -87,6 +91,7 @@ namespace Mcg.Webservice.Api.Controllers
             return Ok(r);
         }
 
+        [Trace]
         [HttpPost]
         [ProducesResponseType(202)]                 // since this is an async command, the return value is simply 'Accepted'.
         [ProducesResponseType(typeof(string), 400)] // bad request
@@ -115,6 +120,7 @@ namespace Mcg.Webservice.Api.Controllers
             return result;
         }
 
+        [Trace]
         [HttpPut]
         [ProducesResponseType(204)]                 // updated successfully
         [ProducesResponseType(typeof(string), 400)] // bad request
@@ -139,6 +145,7 @@ namespace Mcg.Webservice.Api.Controllers
             return NoContent();
         }
 
+        [Trace]
         [HttpDelete]
         [ProducesResponseType(204)]                 // deleted successfully
         [ProducesResponseType(typeof(string), 400)] // bad request

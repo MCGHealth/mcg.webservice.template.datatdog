@@ -1,54 +1,54 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Mcg.Webservice.Api.Infrastructure.Instrumentation;
 using Mcg.Webservice.Api.Infrastructure.Logging;
+using Mcg.Webservice.Api.Infrastructure.Tracing;
 using Mcg.Webservice.Api.Models;
 
 namespace Mcg.Webservice.Api.DataAccess
 {
-    /// <summary>
-    /// This is just a class to provide a simple in-memory data layer so the
-    /// template can demonstrate accessing data.  Please delete this code file
-    /// before testing.
-    /// </summary>
-    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
+	/// <summary>
+	/// This is just a class to provide a simple in-memory data layer so the
+	/// template can demonstrate accessing data.  Please delete this code file
+	/// before testing.
+	/// </summary>
+	[System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     public class ExampleDataRepository : IExampleDataRepository
     {
         private readonly Dictionary<int, ExampleModel> Table = new Dictionary<int, ExampleModel>();
 
 
-        [Instrument, Log]
+        [Trace, Log]
         public IEnumerable<ExampleModel> SelectAll()
         {
             return Table.Values.ToArray();
         }
 
-        [Instrument, Log]
+        [Trace, Log]
         public ExampleModel SelectOneById(int id)
         {
             return Table[id];
         }
 
-        [Instrument, Log]
+        [Trace, Log]
         public ExampleModel SelectOneByEmail(string email)
         {
             return Table.Values.FirstOrDefault(m => m.EmailAddress.Equals(email, StringComparison.InvariantCultureIgnoreCase));
         }
 
-        [Instrument, Log]
+        [Trace, Log]
         public void Insert(ExampleModel model)
         {
             Table.Add(model.ID, model);
         }
 
-        [Instrument, Log]
+        [Trace, Log]
         public void Update(ExampleModel model)
         {
             Table[model.ID] = model;
         }
 
-        [Instrument, Log]
+        [Trace]
         public void Delete(ExampleModel model)
         {
             if (!Table.ContainsKey(model.ID))

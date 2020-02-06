@@ -16,14 +16,18 @@ services:
       - DD_API_KEY=8b0c6b447d120c57779661391a39abd2
       - DD_LOGS_ENABLED=true
       - DD_LOGS_CONFIG_CONTAINER_COLLECT_ALL=true
+      - DD_APM_ENABLED=true
+      - DD_APM_NON_LOCAL_TRAFFIC=true
       - DD_AC_EXCLUDE="name:datadog-agent"
     volumes:
       - "/var/run/docker.sock:/var/run/docker.sock:ro"
       - "/proc/:/host/proc/:ro"
-      - "/Volumes/datadog-agent/run:/opt/datadog-agent/run:rw"
+      - "/Volumes/datadog-agent/run:/opt/datadog-agent/run:rw" # Had to set this up manually in OSX
       - "/sys/fs/cgroup/:/host/sys/fs/cgroup:ro"
-    depends_on:
-      - netcore-svc
+    
+  ###########################################################
+  #  services below here will depend upon the datadog-agent #
+  ###########################################################
 
   netcore-svc:
     build: Mcg.Webservice.Api/.
@@ -37,7 +41,12 @@ services:
       - APP_ASPNETCORE_ENVIRONMENT=Development
       - APP_LOG_LEVEL=verbose
       - APP_CORS_ALLOWED_URLS=*
+      - DD_TRACE_ANALYTICS_ENABLED=true # required
+      - DD_AGENT_HOST=datadog-agent     # required, should be name of agent
+      - DD_TRACE_AGENT_PORT=8126        # required, default is 8126
     labels:
       com.datadoghq.ad.check_names: '["openmetrics"]'
       com.datadoghq.ad.init_configs: '[{}]'
       com.datadoghq.ad.instances: '[{"prometheus_url":"http://%%host%%:80/ops/metrics","namespace":"_","metrics":["mcg_webservice_api*"]}]'
+    depends_on:
+      - datadog-agent

@@ -33,7 +33,7 @@ namespace Mcg.Webservice.Api
             services.AddTransient<IExampleBusinessService, ExampleBusinessService>();
 
             services.AddServiceHealthChecks();
-            //services.AddDistributedTracing(Configuration);
+            services.AddDistributedTracing();
             services.AddSwaggerDocumentation();
         }
 
