@@ -8,7 +8,7 @@ namespace Mcg.Webservice.Api
 	public static class TypeExtensions
 	{
 		private static readonly Regex InvalidCharsRegex = new Regex(@"(\W\d\W|\W|\d)", RegexOptions.Compiled);
-		private static readonly Regex WhitespaceRegex = new Regex(@"_{2,}", RegexOptions.Compiled);
+		private static readonly Regex WhitespaceRegex = new Regex(@"_{2,}\d{0,}", RegexOptions.Compiled);
 
 		/// <summary>
 		/// Converts a string into an 32bit integer.

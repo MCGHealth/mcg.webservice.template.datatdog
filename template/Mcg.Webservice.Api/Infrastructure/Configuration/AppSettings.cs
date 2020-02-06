@@ -13,9 +13,9 @@ namespace Mcg.Webservice.Api.Infrastructure.Configuration
     /// </summary> 
     public sealed class AppSettings : IAppSettings
     {
-        private const string LOG_LEVEL = nameof(LOG_LEVEL);
-        private const string ASPNETCORE_ENVIRONMENT = nameof(ASPNETCORE_ENVIRONMENT);
-        private const string DEV_ENVIRONMENT = "Development";
+        public const string LOG_LEVEL = nameof(LOG_LEVEL);
+        public const string ASPNETCORE_ENVIRONMENT = nameof(ASPNETCORE_ENVIRONMENT);
+        public const string DEV_ENVIRONMENT = "Development";
 
         public static string ServiceName => typeof(AppSettings).Assembly.GetName().Name.SafeString();
 
