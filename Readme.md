@@ -121,7 +121,7 @@ The directory structure will look like this:
 
 ## Run the solution
 
-Note: You will need to run the DataDog Agent, and supply it with your API Key obtained from DataDog, if you wish to view the logs, metrics, and traces in DataDog.  For details on how to run the agent, refer to the [docker-compose.yaml](template/docker-compose.yml)
+Note: You will need to run the DataDog Agent, and supply it with your API Key obtained from DataDog, if you wish to view the logs, metrics, and traces in DataDog.  For details on how to run the agent, refer to the [docker-compose.yaml](template/docker-compose.yml).
 
 From the terminal run the command `make run`. You should see the following output:
 
@@ -149,6 +149,8 @@ dotnet run -p Acme.Example.Api/Acme.Example.Api.csproj
 Open a browser of your choice and navigate to [http://localhost:5000/swagger](http://localhost:5000/swagger). Without writing any code, you should have a working app right out of the gate:
 
 ![http://localhost:5000/swagger](img/swagger-example.png)
+
+To run everything in a container, and to see all the logs, metrics, and traces pushed to DataDog, simply invoke the [docker-compose.yaml](template/docker-compose.yml).
 
 Happy Coding!
 
