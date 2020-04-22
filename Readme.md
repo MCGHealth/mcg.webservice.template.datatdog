@@ -4,6 +4,7 @@ At MCG we continue to explore our options for monitoring our cloud applications.
 
 This template uses much of the same basic CNCF technology as the [Mcg.Webservice.Template.Cncf](https://github.com/MCGHealth/mcg.webservice.template.cncf).  The big difference is that instead of using the aformentioned services, the information is sent to DataDog.
 
+<<<<<<< HEAD
 To recap, when writing microservices using WebAPI and related technologies, one thing all services have in common are the following:
 
 | **Requirement**                                            | **Technology Used**                                                                                                | **Nuget Packages**                                                                                                                                                                                                                                                                                                                                      |
@@ -14,6 +15,16 @@ To recap, when writing microservices using WebAPI and related technologies, one 
 | The solution needs robust structured logging               | [Serilog](https://serilog.net/)                                                                                    | [Serilog.AspNetCore](https://www.nuget.org/packages/Serilog.AspNetCore/)<br/>[Serilog.Extensions.Hosting](https://www.nuget.org/packages/Serilog.Extensions.Hosting/)<br/>[Serilog.Sinks.Console](https://www.nuget.org/packages/Serilog.Sinks.Console/)<br/>[Serilog.Sinks.Elasticsearch](https://www.nuget.org/packages/Serilog.Sinks.Elasticsearch/) |
 | The solution requires distributed tracing                  | [OpenTracing](https://opentracing.io/)                                                                             | [OpenTracing](https://www.nuget.org/packages/OpenTracing/)<br/>[OpenTracing.Contrib.NetCore](https://www.nuget.org/packages/OpenTracing.Contrib.NetCore/)<br/>[Jaeger](https://www.nuget.org/packages/Jaeger/)                                                                                                                                          |
 | The solution should publish its API using an open standard | [OpenAPI](https://www.openapis.org/)<br/>[Swagger](https://swagger.io/)                                            | [Swashbuckle.AspNetCore](Swashbuckle.AspNetCore)                                                                                                                                                                                                                                                                                                        |
+=======
+| **Requirement**                                            | **Technology Used**                                                                                                               | **Nuget Packages**                                                                                                                                                                                                                                                                                                                                      |
+| ---------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| The solution needs to be containerized                     | [Docker](https://www.docker.com/products/docker-desktop)                                                                          | n/a                                                                                                                                                                                                                                                                                                                                                     |
+| The solution needs to instrumented                         | [Prometheus](https://prometheus.io/) and [Grafana](https://grafana.com/)                                                          | [prometheus-net](https://www.nuget.org/packages/prometheus-net/)<br/>[prometheus-net.AspNetCore](https://www.nuget.org/packages/prometheus-net.AspNetCore/)                                                                                                                                                                                             |
+| The solution requires a health-check endpoint              | [ASP.NET Core Api](https://docs.microsoft.com/en-us/aspnet/core/host-and-deploy/health-checks?view=aspnetcore-3.0)                | [Microsoft.AspNetCore.Diagnostics.HealthChecks](https://www.nuget.org/packages/Microsoft.AspNetCore.Diagnostics.HealthChecks/)                                                                                                                                                                                                                          |
+| The solution needs robust structured logging               | [Serilog](https://serilog.net/)<br/>[Elasticsearch](https://www.elastic.co/)<br/>[Kibana](https://www.elastic.co/products/kibana) | [Serilog.AspNetCore](https://www.nuget.org/packages/Serilog.AspNetCore/)<br/>[Serilog.Extensions.Hosting](https://www.nuget.org/packages/Serilog.Extensions.Hosting/)<br/>[Serilog.Sinks.Console](https://www.nuget.org/packages/Serilog.Sinks.Console/)<br/>[Serilog.Sinks.Elasticsearch](https://www.nuget.org/packages/Serilog.Sinks.Elasticsearch/) |
+| The solution requires distributed tracing                  | [OpenTracing](https://opentracing.io/)<br/>[Jaeger](https://www.jaegertracing.io/)                                                | [OpenTracing](https://www.nuget.org/packages/OpenTracing/)<br/>[OpenTracing.Contrib.NetCore](https://www.nuget.org/packages/OpenTracing.Contrib.NetCore/)<br/>[Jaeger](https://www.nuget.org/packages/Jaeger/)                                                                                                                                          |
+| The solution should publish its API using an open standard | [OpenAPI](https://www.openapis.org/)<br/>[Swagger](https://swagger.io/)                                                           | [Swashbuckle.AspNetCore](Swashbuckle.AspNetCore)                                                                                                                                                                                                                                                                                                        |
+>>>>>>> master
 
 Setting up this “infrastructure code”, or boilerplate, can be almost as time consuming as implementing the logic that solves the business problem itself! Not only that, getting that boilerplate implemented across all services consistently can be a real challenge, especially when you may have several scrum teams working on different projects at one time. Consistency in implementing these cross-cutting concerns is equally as important for your DevOps and SysOps teams.
 
@@ -95,11 +106,36 @@ dotnet new mcgcncf -o Acme.Example -n Acme.Example
 
 ## Run the solution
 
-From the terminal run the command `docker-compose up --build`. 
+Note: You will need to run the DataDog Agent, and supply it with your API Key obtained from DataDog, if you wish to view the logs, metrics, and traces in DataDog.  For details on how to run the agent, refer to the [docker-compose.yaml](template/docker-compose.yml).
+
+From the terminal run the command `make run`. You should see the following output:
+
+```shell
+make run
+dotnet build Acme.Example.sln -c Debug --force --nologo
+  Restore completed in 380.78 ms for /Users/.../Acme.Example.UnitTests/Acme.Example.UnitTests.csproj.
+  Restore completed in 380.78 ms for /Users/.../Acme.Example.Api/Acme.Example.Api.csproj.
+  Acme.Example.Api -> /Users/.../Acme.Example.Api/bin/Debug/netcoreapp3.0/Acme.Example.Api.dll
+  Acme.Example.UnitTests -> /Users/.../Acme.Example.UnitTests/bin/Debug/netcoreapp3.0/Acme.Example.UnitTests.dll
+
+Build succeeded.
+    0 Warning(s)
+    0 Error(s)
+
+Time Elapsed 00:00:01.33
+dotnet run -p Acme.Example.Api/Acme.Example.Api.csproj
+[13:20:29 INF] Initialized Tracer(ServiceName=Mcg.Webservice, Version=CSharp-0.3.6.0, Reporter=RemoteReporter(Sender=UdpSender(UdpTransport=ThriftUdpClientTransport(Client=127.0.0.1:6831))), Sampler=ConstSampler(True), IPv4=167772263, Tags=[jaeger.version, CSharp-0.3.6.0], [hostname, Slartibartfast.local], [ip, 10.0.0.103], ZipkinSharedRpcSpan=False, ExpandExceptionLogs=False, UseTraceId128Bit=False)
+[13:20:30 INF] Now listening on: http://localhost:5000
+[13:20:30 INF] Application started. Press Ctrl+C to shut down.
+[13:20:30 INF] Hosting environment: Production
+[13:20:30 INF] Content root path: /Users/.../Acme.Example.Api
+```
 
 Once the service is running, open a browser of your choice and navigate to [http://localhost:8080/swagger](http://localhost:8080/swagger). Without writing any code, you should have a working app right out of the gate:
 
 ![http://localhost:8080/swagger](img/swagger-example.png)
+
+To run everything in a container, and to see all the logs, metrics, and traces pushed to DataDog, simply invoke the [docker-compose.yaml](template/docker-compose.yml).
 
 Happy Coding!
 
