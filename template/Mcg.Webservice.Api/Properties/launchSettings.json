@@ -5,7 +5,7 @@
       "launchBrowser": true,
       "launchUrl": "swagger",
       "environmentVariables": {
-        "DD_API_KEY": "8b0c6b447d120c57779661391a39abd2",
+        "DD_API_KEY": "[enter your key]",
         "APP_LOG_LEVEL": "information",
         "APP_CORS_ALLOWED_URLS": "*",
         "ASPNETCORE_ENVIRONMENT": "Development"
