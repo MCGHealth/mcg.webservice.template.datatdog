@@ -13,7 +13,7 @@ services:
     networks: 
       - svc_network
     environment:
-      - DD_API_KEY=8b0c6b447d120c57779661391a39abd2
+      - DD_API_KEY=[add your key]
       - DD_LOGS_ENABLED=true
       - DD_LOGS_CONFIG_CONTAINER_COLLECT_ALL=true
       - DD_AC_EXCLUDE="name:datadog-agent"
