@@ -21,7 +21,7 @@ namespace Mcg.Webservice.UnitTests.InfrastructureTests.Logging
             DefaultHttpContext context = new DefaultHttpContext();
             context.Request.Body = new MemoryStream();
             context.Request.Method = "GET";
-            context.Request.Path = "/this/is/a/path";
+            context.Request.Path = "/api/test";
             context.Request.PathBase = new PathString("/test");
             context.Request.Scheme = "http";
             context.Request.Host = new HostString("www.unittests.fake");
@@ -37,13 +37,12 @@ namespace Mcg.Webservice.UnitTests.InfrastructureTests.Logging
                                .WriteTo.TestCorrelator()
                                .CreateLogger();
 
-
-            var mw = new RequestLoggingMiddleware((innerHttpContext) => Task.FromResult(0), Helpers.MockIAppSettings(), logger);
-
-            var context = TestContext();
-
             using (TestCorrelator.CreateContext())
             {
+                var mw = new RequestLoggingMiddleware((innerHttpContext) => Task.FromResult(0), Helpers.MockIAppSettings(), logger);
+
+            var context = TestContext();
+            
                 await mw.InvokeAsync(context);
 
                 var logEvent = TestCorrelator.GetLogEventsFromCurrentContext().FirstOrDefault();
