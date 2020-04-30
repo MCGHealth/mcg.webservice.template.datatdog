@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Prometheus;
+using Mcg.Webservice.Api.Infrastructure.Tracing;
 
 namespace Mcg.Webservice.Api
 {
