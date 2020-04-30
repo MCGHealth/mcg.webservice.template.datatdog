@@ -82,18 +82,39 @@ dotnet new --debug:reinit
 The template is a dotnet template, not a Visual Studio template. Therefore you create a new solution from the commandline. To create a new solution with the template use the following command:
 
 ```shell
-dotnet new mcgwebsvc -o [desired solution root dir name] -n [solution name]
+dotnet new mcgdd -o [desired solution root dir name] -n [solution name]
 ```
 
 For example, the following command will create a new soltion named "Acme.Example" and place it in the "Acme.Example" directory:
 
 ```shell
-dotnet new mcgcncf -o Acme.Example -n Acme.Example
+dotnet new mcgdd -o Acme.Example -n Acme.Example
 ```
 
 ## Run the solution
 
-Note: You will need to run the DataDog Agent, and supply it with your API Key obtained from DataDog, if you wish to view the logs, metrics, and traces in DataDog.  For details on how to run the agent, refer to the [docker-compose.yaml](template/docker-compose.yml).
+
+Be sure to update the environment key to your DataDog api key in the [launchSettings.json](template/Mcg.WebService.Api/Properties/../../Mcg.Webservice.Api/Properties/launchSettings.json) on line 8:
+
+``` json
+{
+  "profiles": {
+    "Mcg.Webservice.Api": {
+      "commandName": "Project",
+      "launchBrowser": true,
+      "launchUrl": "swagger",
+      "environmentVariables": {
+        "DD_API_KEY": "[enter your key]",
+        "APP_LOG_LEVEL": "information",
+        "APP_CORS_ALLOWED_URLS": "*",
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      },
+      "applicationUrl": "http://localhost:8080"
+    }
+  }
+}
+```
+You will also need to ensure the DataDog agent is running.
 
 From the terminal run the command `make run`. You should see the following output:
 
@@ -121,6 +142,18 @@ dotnet run -p Acme.Example.Api/Acme.Example.Api.csproj
 Once the service is running, open a browser of your choice and navigate to [http://localhost:8080/swagger](http://localhost:8080/swagger). Without writing any code, you should have a working app right out of the gate:
 
 ![http://localhost:8080/swagger](img/swagger-example.png)
+
+## Running in Containers
+
+Be sure to update the environment key to your DataDog api key in the [docker-compose.yaml](template/docker-compose.yml):
+
+``` yaml
+environment:
+      - DD_API_KEY=[add your key]
+      - DD_LOGS_ENABLED=true
+      - DD_LOGS_CONFIG_CONTAINER_COLLECT_ALL=true
+```
+
 
 To run everything in a container, and to see all the logs, metrics, and traces pushed to DataDog, simply invoke the [docker-compose.yaml](template/docker-compose.yml).
 
