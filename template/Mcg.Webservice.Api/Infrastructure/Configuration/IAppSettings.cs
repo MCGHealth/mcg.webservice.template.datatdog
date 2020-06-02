@@ -36,12 +36,5 @@ namespace Mcg.Webservice.Api.Infrastructure.Configuration
         /// </summary>
         /// <returns></returns>
         string ToString();
-
-        /// <summary>
-        /// Permits a configuration setting to be updated at runtime.
-        /// </summary>
-        /// <param name="key"></param>
-        /// <param name="value"></param>
-        void Update(string key, string value);
     }
 }

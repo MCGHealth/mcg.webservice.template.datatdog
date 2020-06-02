@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Reflection;
 using FluentAssertions;
 using FluentAssertions.Execution;
 using Mcg.Webservice.Api.Infrastructure.Configuration;
@@ -11,7 +10,7 @@ using Serilog.Events;
 namespace Mcg.Webservice.UnitTests.ConfigurationTests
 {
 
-    [TestFixture]
+	[TestFixture]
     public class SettingsFunctionTests
     {
        [Test]
@@ -95,51 +94,6 @@ namespace Mcg.Webservice.UnitTests.ConfigurationTests
             {
                 settings[kp.Key].Should().Be(kp.Value);
             }
-        }
-
-        [Test]
-        public void Update_correctly_updates_value()
-        {
-            var control = Helpers.TestConfigValues();
-            var settings = new AppSettings(control);
-
-
-            using var scope = new AssertionScope();
-            settings.LogLevel.Should().Be(LogEventLevel.Verbose);
-
-            settings.Update("LOG_LEVEL", "warning");
-
-            settings.LogLevel.Should().Be(LogEventLevel.Warning);
-        }
-
-        [Test]
-        public void Update_does_nothing_if_not_LOG_LEVEL()
-        {
-            var control = Helpers.TestConfigValues();
-            var settings = new AppSettings(control);
-
-
-            using var scope = new AssertionScope();
-            var expected = settings["CORS_ALLOWED_URLS"];
-
-            settings.Update("CORS_ALLOWED_URLS", "thunk");
-
-            settings["CORS_ALLOWED_URLS"].Should().Be(expected);
-        }
-
-        [Test]
-        public void Update_throws_InvalidCastException()
-        {
-            var control = Helpers.TestConfigValues();
-            var settings = new AppSettings(control);
-
-            Action action = () =>
-            {
-                settings.Update("LOG_LEVEL", "borked");
-            };
-
-            action.Should().Throw<TargetInvocationException>()
-                .WithInnerException< InvalidCastException>();
         }
     }
 }
