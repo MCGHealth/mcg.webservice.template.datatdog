@@ -1,23 +1,54 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Diagnostics;
+using System.Globalization;
 using System.Linq;
-using Mcg.Webservice.Api.Infrastructure.Logging;
+using System.Reflection;
 using Microsoft.Extensions.Configuration;
 using Serilog.Events;
 
 namespace Mcg.Webservice.Api.Infrastructure.Configuration
 {
-    /// <summary>
-    /// Allows access to the environmental vars that are used to configure the app.
-    /// </summary> 
-    public sealed class AppSettings : IAppSettings
+	/// <summary>
+	/// Allows access to the environmental vars that are used to configure the app.
+	/// </summary> 
+	public sealed class AppSettings : IAppSettings
     {
         public const string LOG_LEVEL = nameof(LOG_LEVEL);
         public const string ASPNETCORE_ENVIRONMENT = nameof(ASPNETCORE_ENVIRONMENT);
         public const string DEV_ENVIRONMENT = "Development";
 
         public static string ServiceName => typeof(AppSettings).Assembly.GetName().Name.SafeString();
+        public static string AsmVersion => typeof(AppSettings).Assembly.GetName().Version.ToString();
+
+        private static Assembly asm => Assembly.GetEntryAssembly();
+
+        public static string AppVersion => asm.GetName().Version.ToString();
+        public static string ProductVersion => FileVersionInfo.GetVersionInfo(asm.Location).ProductVersion;
+        public static DateTime BuildDate => buildDate();
+
+        private static DateTime buildDate()
+        {
+            const string BuildVersionMetadataPrefix = "+build";
+
+            var attribute = Assembly.GetExecutingAssembly().GetCustomAttribute<AssemblyInformationalVersionAttribute>();
+            if (attribute?.InformationalVersion != null)
+            {
+                var value = attribute.InformationalVersion;
+                var index = value.IndexOf(BuildVersionMetadataPrefix);
+                if (index > 0)
+                {
+                    value = value.Substring(index + BuildVersionMetadataPrefix.Length);
+                    if (DateTime.TryParseExact(value, "yyyyMMddHHmmss", CultureInfo.InvariantCulture, DateTimeStyles.None, out var result))
+                    {
+                        return result;
+                    }
+                }
+            }
+
+            return default;
+        }
 
         /// <summary>
         /// The dictionary that contains the configuration values read from the environmental variables.
@@ -87,23 +118,6 @@ namespace Mcg.Webservice.Api.Infrastructure.Configuration
                 }
 
                 return configData[key];
-            }
-        }
-
-
-        [Log]
-        public void Update(string key, string newValue)
-        {
-            if (key == LOG_LEVEL)
-            {
-                var results = newValue.ToEnum<LogEventLevel>();
-
-                if (!results.success)
-                {
-                    throw new InvalidCastException($"The value {newValue} is not a valid SeverityLevel.");
-                }
-
-                LogLevel = results.newValue;
             }
         }
     }
