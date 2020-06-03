@@ -7,10 +7,9 @@ using Mcg.Webservice.Api.Infrastructure.Configuration;
 
 namespace Mcg.Webservice.Api.Infrastructure.Instrumentation
 {
-	[System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
 	[AttributeUsage(AttributeTargets.Class | AttributeTargets.Method)]
 	[Injection(typeof(MetricsAspect))]
-	public sealed class InstrumentAttribute : Attribute { }
+	public sealed class MetricsAttribute : Attribute { }
 
 	/// <summary>
 	/// Adds instrumentation to the decorated method.
@@ -20,7 +19,6 @@ namespace Mcg.Webservice.Api.Infrastructure.Instrumentation
 	/// and in https://mcghealth.atlassian.net/wiki/spaces/ARC/pages/365723941/03.02+Performance+Metrics
 	/// attributes weren't specifically ordered, the two were combined into one.
 	/// </remarks>
-	[System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
 	[Aspect(Scope.Global, Factory = typeof(AspectFactory))]
 	public class MetricsAspect
 	{
@@ -42,8 +40,6 @@ namespace Mcg.Webservice.Api.Infrastructure.Instrumentation
 			var sw = Stopwatch.StartNew();
 			var success = true;
 
-			metrics.IncGauge($"{eventName}_gauge");
-
 			try
 			{
 				return (T)target(args);
@@ -55,7 +51,7 @@ namespace Mcg.Webservice.Api.Infrastructure.Instrumentation
 			}
 			finally
 			{
-				Write(metrics, eventName, sw.ElapsedTicks, success);
+				Write(metrics, eventName, sw.ElapsedMilliseconds, success);
 			}
 		}
 
@@ -65,7 +61,6 @@ namespace Mcg.Webservice.Api.Infrastructure.Instrumentation
 			var sw = Stopwatch.StartNew();
 			var success = true;
 
-			metrics.IncGauge($"{eventName}_gauge");
 			try
 			{
 				var result = await (Task<T>)target(args);
@@ -78,17 +73,14 @@ namespace Mcg.Webservice.Api.Infrastructure.Instrumentation
 			}
 			finally
 			{
-				Write(metrics, eventName, sw.ElapsedTicks, success);
+				Write(metrics, eventName, sw.ElapsedMilliseconds, success);
 			}
 		}
 
 		private static void Write(IAppMetrics metrics, string eventName, long duration, bool success = true)
 		{
-			double elapsed = (double)duration / AspectFactory.TickPerMicrosecond;
-
-			metrics.DecGauge($"{eventName}_gauge");
 			metrics.IncCounter($"{eventName}_count", success);
-			metrics.IncHistogram($"{eventName}_elapsed_microseconds", elapsed, success);
+			metrics.IncHistogram($"{eventName}_elapsed_ms", duration, success);
 		}
 
 		[Advice(Kind.Around, Targets = Target.Method)]

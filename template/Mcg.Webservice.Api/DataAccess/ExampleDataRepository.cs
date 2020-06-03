@@ -12,44 +12,37 @@ namespace Mcg.Webservice.Api.DataAccess
 	/// template can demonstrate accessing data.  Please delete this code file
 	/// before testing.
 	/// </summary>
-	[System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
-    public class ExampleDataRepository : IExampleDataRepository
+    [Trace, Log]
+    public class UserDataRepository : IExampleDataRepository
     {
-        private readonly Dictionary<int, ExampleModel> Table = new Dictionary<int, ExampleModel>();
+        private readonly Dictionary<int, UserModel> Table = new Dictionary<int, UserModel>();
 
-
-        [Trace, Log]
-        public IEnumerable<ExampleModel> SelectAll()
+        public IEnumerable<UserModel> SelectAll()
         {
             return Table.Values.ToArray();
         }
 
-        [Trace, Log]
-        public ExampleModel SelectOneById(int id)
+        public UserModel SelectOneById(int id)
         {
             return Table[id];
         }
 
-        [Trace, Log]
-        public ExampleModel SelectOneByEmail(string email)
+        public UserModel SelectOneByEmail(string email)
         {
             return Table.Values.FirstOrDefault(m => m.EmailAddress.Equals(email, StringComparison.InvariantCultureIgnoreCase));
         }
 
-        [Trace, Log]
-        public void Insert(ExampleModel model)
+        public void Insert(UserModel model)
         {
             Table.Add(model.ID, model);
         }
 
-        [Trace, Log]
-        public void Update(ExampleModel model)
+        public void Update(UserModel model)
         {
             Table[model.ID] = model;
         }
 
-        [Trace]
-        public void Delete(ExampleModel model)
+        public void Delete(UserModel model)
         {
             if (!Table.ContainsKey(model.ID))
             {

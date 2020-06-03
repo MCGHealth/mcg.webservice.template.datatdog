@@ -9,7 +9,6 @@ using Serilog;
 
 namespace Mcg.Webservice.Api.Infrastructure.Logging
 {
-	[System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method)]
     [Injection(typeof(LogAspect))]
     public sealed class LogAttribute : Attribute { }
@@ -17,7 +16,6 @@ namespace Mcg.Webservice.Api.Infrastructure.Logging
     /// <summary>
     /// Adds logging to the decorated method.
     /// </summary>
-    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     [Aspect(Scope.Global, Factory = typeof(AspectFactory))]
     public class LogAspect
     {

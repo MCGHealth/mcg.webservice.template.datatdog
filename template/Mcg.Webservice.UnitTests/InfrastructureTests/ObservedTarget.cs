@@ -22,7 +22,7 @@ namespace Mcg.Webservice.UnitTests.InfrastructureTests
             this.ThrowsEx = throwsEx;
         }
 
-        [Instrument, Log, Trace]
+        [Metrics, Log, Trace]
         public int Add(params int[] values)
         {
             System.Threading.Thread.Sleep(50); // -> create an exaggerated elapsed ms for test verification.
@@ -35,7 +35,7 @@ namespace Mcg.Webservice.UnitTests.InfrastructureTests
             return values.Sum();
         }
 
-        [Instrument, Log, Trace]
+        [Metrics, Log, Trace]
         public async Task<int> AddAsync(params int[] values)
         {
             return await Task.Run(() => Add(values));

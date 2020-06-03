@@ -14,7 +14,7 @@ namespace Mcg.Webservice.UnitTests.ServicesTests
         {
             Action action = () =>
             {
-                _ = new ExampleBusinessService(null);
+                _ = new UserBusinessService(null);
             };
 
             action.Should().Throw<ArgumentNullException>();

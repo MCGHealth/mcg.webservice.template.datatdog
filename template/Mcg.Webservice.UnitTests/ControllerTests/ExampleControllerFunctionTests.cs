@@ -16,13 +16,13 @@ namespace Mcg.Webservice.UnitTests.ControllerTests
         [Test]
         public void Get_returns_expected_results()
         {
-            var controller = new ExampleController(Helpers.MockExampleBusinessLogic(), Helpers.MockIAppSettings());
+            var controller = new UserController(Helpers.MockExampleBusinessLogic(), Helpers.MockIAppSettings());
 
             var response = controller.Get() as OkObjectResult;
 
             response.StatusCode.Should().Be(200);
 
-            var value = response.Value as IEnumerable<ExampleModel>;
+            var value = response.Value as IEnumerable<UserModel>;
 
             value.Should().NotBeEmpty();
 
@@ -38,7 +38,7 @@ namespace Mcg.Webservice.UnitTests.ControllerTests
         [TestCase(0, typeof(BadRequestResult))]
         public void Get_by_id_returns_expected_results(int id, Type responseType)
         {
-            var controller = new ExampleController(Helpers.MockExampleBusinessLogic(), Helpers.MockIAppSettings());
+            var controller = new UserController(Helpers.MockExampleBusinessLogic(), Helpers.MockIAppSettings());
 
             var response = controller.GetById(id);
 
@@ -46,7 +46,7 @@ namespace Mcg.Webservice.UnitTests.ControllerTests
 
             if (response is OkObjectResult)
             {
-                var result = ((OkObjectResult)response).Value as ExampleModel;
+                var result = ((OkObjectResult)response).Value as UserModel;
 
                 Assert.IsTrue(result.Equals(Helpers.TestModel));
             }
@@ -59,7 +59,7 @@ namespace Mcg.Webservice.UnitTests.ControllerTests
         [TestCase("jim@aol.com", typeof(NotFoundResult))]
         public void Get_by_email_returns_expected_results(string email, Type responseType)
         {
-            var controller = new ExampleController(Helpers.MockExampleBusinessLogic(), Helpers.MockIAppSettings());
+            var controller = new UserController(Helpers.MockExampleBusinessLogic(), Helpers.MockIAppSettings());
 
             var response = controller.GetByEmail(email);
 
@@ -67,7 +67,7 @@ namespace Mcg.Webservice.UnitTests.ControllerTests
 
             if (response is OkObjectResult)
             {
-                var result = ((OkObjectResult)response).Value as ExampleModel;
+                var result = ((OkObjectResult)response).Value as UserModel;
 
                 Assert.IsTrue(result.Equals(Helpers.TestModel));
             }
@@ -76,7 +76,7 @@ namespace Mcg.Webservice.UnitTests.ControllerTests
         [Test]
         public void Post_returns_expected_responses()
         {
-            var controller = new ExampleController(Helpers.MockExampleBusinessLogic(), Helpers.MockIAppSettings());
+            var controller = new UserController(Helpers.MockExampleBusinessLogic(), Helpers.MockIAppSettings());
 
             using var scope = new AssertionScope();
             var response = controller.Post(Helpers.TestModel);
@@ -85,14 +85,14 @@ namespace Mcg.Webservice.UnitTests.ControllerTests
             response = controller.Post(Helpers.NullModel);
             response.Should().BeAssignableTo<BadRequestResult>();
 
-            response = controller.Post(new ExampleModel());
+            response = controller.Post(new UserModel());
             response.Should().BeAssignableTo<UnprocessableEntityObjectResult>();
         }
 
         [Test]
         public void Put_returns_NoContent()
         {
-            var controller = new ExampleController(Helpers.MockExampleBusinessLogic(), Helpers.MockIAppSettings());
+            var controller = new UserController(Helpers.MockExampleBusinessLogic(), Helpers.MockIAppSettings());
 
             var response = controller.Put(Helpers.TestModel);
             response.Should().BeAssignableTo<NoContentResult>();
@@ -101,7 +101,7 @@ namespace Mcg.Webservice.UnitTests.ControllerTests
         [Test]
         public void Put_returns_BadRequest()
         {
-            var controller = new ExampleController(Helpers.MockExampleBusinessLogic(), Helpers.MockIAppSettings());
+            var controller = new UserController(Helpers.MockExampleBusinessLogic(), Helpers.MockIAppSettings());
             var response = controller.Put(Helpers.NullModel);
             response.Should().BeAssignableTo<BadRequestResult>();
         }
@@ -111,7 +111,7 @@ namespace Mcg.Webservice.UnitTests.ControllerTests
         [Test]
         public void Delete_returns_NoContent()
         {
-            var controller = new ExampleController(Helpers.MockExampleBusinessLogic(), Helpers.MockIAppSettings());
+            var controller = new UserController(Helpers.MockExampleBusinessLogic(), Helpers.MockIAppSettings());
             var response = controller.Delete(Helpers.TestModel);
             response.Should().BeAssignableTo<NoContentResult>();
         }
@@ -119,7 +119,7 @@ namespace Mcg.Webservice.UnitTests.ControllerTests
         [Test]
         public void Delete_returns_BadRequest()
         {
-            var controller = new ExampleController(Helpers.MockExampleBusinessLogic(), Helpers.MockIAppSettings());
+            var controller = new UserController(Helpers.MockExampleBusinessLogic(), Helpers.MockIAppSettings());
             var response = controller.Delete(Helpers.NullModel);
             response.Should().BeAssignableTo<BadRequestResult>();
         }
