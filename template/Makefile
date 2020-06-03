@@ -1,10 +1,10 @@
-﻿IMG=""
-IMG=api_cncf
+﻿default: build
+
+IMG=api_svc
 SLN=Mcg.Webservice
 API=$(SLN).Api/$(SLN).Api.csproj
 VER=v0.0.1
 
-default: build
 
 clean:
 	dotnet clean
@@ -23,3 +23,6 @@ test: build
 
 publish:
 	dotnet publish -r linux-musl-x64 -c Release -o ./$(SLN).api/publish $(API)
+
+img:
+	docker build -t $(IMG):$(VER) Mcg.Webservice.Api/. --no-cache
