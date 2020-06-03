@@ -3,13 +3,12 @@ using Mcg.Webservice.Api.Infrastructure;
 using Mcg.Webservice.Api.Infrastructure.Configuration;
 using Mcg.Webservice.Api.Infrastructure.HealthChecks;
 using Mcg.Webservice.Api.Infrastructure.Instrumentation;
-using Mcg.Webservice.Api.Infrastructure.Logging;
+using Mcg.Webservice.Api.Infrastructure.Tracing;
 using Mcg.Webservice.Api.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Prometheus;
-using Mcg.Webservice.Api.Infrastructure.Tracing;
 
 namespace Mcg.Webservice.Api
 {
@@ -43,17 +42,10 @@ namespace Mcg.Webservice.Api
             AspectFactory.Metrics = app.ApplicationServices.GetService<IAppMetrics>();
             AspectFactory.Settings = app.ApplicationServices.GetService<IAppSettings>();
 
-			app.UseRequestLogging();
-
 			app.UseRouting();
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
-            });
-
-            app.MapWhen(context => context.Request.Path.StartsWithSegments("/api"), appBuilder =>
-            {
-                appBuilder.UseRequestLogging();
             });
 
             app.UseSwaggerDocumentation();
