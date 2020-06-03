@@ -32,12 +32,12 @@ namespace Mcg.Webservice.Api.Services
 
         public (bool ok, string error, UserModel newModel) Insert(UserModel model)
         {
-            if (DataAccess.Contains(model.ID))
+            if (DataAccess.ContainsId(model.ID))
             {
                 return (ok: false, error: $"A model with the id {model.ID} already exists.", newModel: null);
             }
 
-            if (DataAccess.Contains(model.EmailAddress))
+            if (DataAccess.ContainsEmail(model.EmailAddress))
             {
                 return (ok: false, error: $"A model with the email {model.EmailAddress} already exists.", newModel: null);
             }
@@ -69,7 +69,7 @@ namespace Mcg.Webservice.Api.Services
 
         public (bool ok, string error) Update(UserModel model)
         {
-            if (!DataAccess.Contains(model.ID))
+            if (!DataAccess.ContainsId(model.ID))
             {
                 return (ok: false, error: $"Entity not found in data store.");
             }

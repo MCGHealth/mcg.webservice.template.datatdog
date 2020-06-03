@@ -11,8 +11,8 @@ namespace Mcg.Webservice.Api.DataAccess
         UserModel SelectOneByEmail(string email);
         UserModel SelectOneById(int id);
         void Update(UserModel model);
-        bool Contains(int id);
-        bool Contains(string email);
+        bool ContainsId(int id);
+        bool ContainsEmail(string email);
         int NextId();
     }
 }
