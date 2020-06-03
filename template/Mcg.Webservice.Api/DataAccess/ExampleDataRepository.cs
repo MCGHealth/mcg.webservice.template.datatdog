@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Mcg.Webservice.Api.Infrastructure.Instrumentation;
 using Mcg.Webservice.Api.Infrastructure.Logging;
 using Mcg.Webservice.Api.Infrastructure.Tracing;
 using Mcg.Webservice.Api.Models;
@@ -12,7 +13,7 @@ namespace Mcg.Webservice.Api.DataAccess
 	/// template can demonstrate accessing data.  Please delete this code file
 	/// before testing.
 	/// </summary>
-    [Trace, Log]
+    [Trace, Metrics, Log]
     public class UserDataRepository : IExampleDataRepository
     {
         private readonly Dictionary<int, UserModel> Table = new Dictionary<int, UserModel>();
@@ -52,12 +53,12 @@ namespace Mcg.Webservice.Api.DataAccess
             Table.Remove(model.ID, out _);
         }
 
-        public bool Contains(int id)
+        public bool ContainsId(int id)
         {
             return Table.ContainsKey(id);
         }
 
-        public bool Contains(string email)
+        public bool ContainsEmail(string email)
         {
             return Table.Values.Any(m => m.EmailAddress.Equals(email, StringComparison.InvariantCultureIgnoreCase));
         }
