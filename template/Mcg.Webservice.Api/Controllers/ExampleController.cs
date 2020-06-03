@@ -1,5 +1,6 @@
 ﻿using System;
 using Mcg.Webservice.Api.Infrastructure.Configuration;
+using Mcg.Webservice.Api.Infrastructure.Logging;
 using Mcg.Webservice.Api.Infrastructure.Tracing;
 using Mcg.Webservice.Api.Models;
 using Mcg.Webservice.Api.Services;
@@ -13,21 +14,21 @@ namespace Mcg.Webservice.Api.Controllers
     /// <remarks>
     /// Feel free to reuse or delete this controller.  It's meant as an example.
     /// </remarks>
+	[Trace, Log]
     [Route("api/[controller]")]
     [ApiController, Produces("application/json"), Consumes("application/json")]
-    public class ExampleController : ControllerBase
+    public class UserController : ControllerBase
     {
         internal IExampleBusinessService Logic { get; }
 
         internal IAppSettings Settings { get; }
 
-        public ExampleController(IExampleBusinessService busLogic, IAppSettings settings)
+        public UserController(IExampleBusinessService busLogic, IAppSettings settings)
         {
             this.Logic = busLogic ?? throw new ArgumentNullException(nameof(busLogic));
             this.Settings = settings ?? throw new ArgumentNullException(nameof(settings));
         }
 
-        [Trace]
         [HttpGet]
         [ProducesResponseType(typeof(string), 200)] // ok
         [ProducesResponseType(typeof(string), 400)] // bad request
@@ -41,7 +42,6 @@ namespace Mcg.Webservice.Api.Controllers
             return Ok(result);
         }
 
-        [Trace]
         [HttpGet("id/{id}")]
         [ProducesResponseType(typeof(string), 200)] // ok
         [ProducesResponseType(typeof(string), 400)] // bad request
@@ -66,7 +66,6 @@ namespace Mcg.Webservice.Api.Controllers
             return Ok(r);
         }
 
-        [Trace]
         [HttpGet("email/{email}")]
         [ProducesResponseType(typeof(string), 200)] // ok
         [ProducesResponseType(typeof(string), 400)] // bad request
@@ -91,7 +90,6 @@ namespace Mcg.Webservice.Api.Controllers
             return Ok(r);
         }
 
-        [Trace]
         [HttpPost]
         [ProducesResponseType(202)]                 // since this is an async command, the return value is simply 'Accepted'.
         [ProducesResponseType(typeof(string), 400)] // bad request
@@ -101,7 +99,7 @@ namespace Mcg.Webservice.Api.Controllers
         [ProducesResponseType(typeof(string), 422)] // 422 Unprocessable Entity => resource already exists...ref https://tools.ietf.org/html/rfc4918#section-11.2
         [ProducesResponseType(typeof(string), 500)] // internal server error
         [ProducesResponseType(typeof(string), 502)] // upstream resource isn't available...ref https://tools.ietf.org/html/rfc2616?spm=5176.doc32013.2.3.Aimyd7#section-10.5.3
-        public IActionResult Post([FromBody] ExampleModel value)
+        public IActionResult Post([FromBody] UserModel value)
         {
             if( value == null)
             {
@@ -120,7 +118,6 @@ namespace Mcg.Webservice.Api.Controllers
             return result;
         }
 
-        [Trace]
         [HttpPut]
         [ProducesResponseType(204)]                 // updated successfully
         [ProducesResponseType(typeof(string), 400)] // bad request
@@ -129,7 +126,7 @@ namespace Mcg.Webservice.Api.Controllers
         [ProducesResponseType(typeof(string), 412)] // required request headers are wrong/missing
         [ProducesResponseType(typeof(string), 500)] // internal server error
         [ProducesResponseType(typeof(string), 502)] // upstream resource isn't available...ref https://tools.ietf.org/html/rfc2616?spm=5176.doc32013.2.3.Aimyd7#section-10.5.3
-        public IActionResult Put([FromBody] ExampleModel value)
+        public IActionResult Put([FromBody] UserModel value)
         {
             if (value == null)
             {
@@ -145,7 +142,6 @@ namespace Mcg.Webservice.Api.Controllers
             return NoContent();
         }
 
-        [Trace]
         [HttpDelete]
         [ProducesResponseType(204)]                 // deleted successfully
         [ProducesResponseType(typeof(string), 400)] // bad request
@@ -153,7 +149,7 @@ namespace Mcg.Webservice.Api.Controllers
         [ProducesResponseType(typeof(string), 412)] // required request headers are wrong/missing
         [ProducesResponseType(typeof(string), 500)] // internal server error
         [ProducesResponseType(typeof(string), 502)] // upstream resource isn't available...ref https://tools.ietf.org/html/rfc2616?spm=5176.doc32013.2.3.Aimyd7#section-10.5.3
-        public IActionResult Delete(ExampleModel value)
+        public IActionResult Delete(UserModel value)
         {
             if (value == null)
             {

@@ -1,6 +1,5 @@
 ﻿#pragma warning disable IDE1006
 
-
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -29,7 +28,6 @@ namespace Mcg.Webservice.Api.Infrastructure.Instrumentation
 
         internal IDictionary<string, Counter> Counters = new Dictionary<string, Counter>();
         internal IDictionary<string, Histogram> Histograms = new Dictionary<string, Histogram>();
-        internal IDictionary<string, Gauge> Gauges = new Dictionary<string, Gauge>();
         internal List<string> MetricsPrefixes = new List<string>();
         private List<string> DefaultLabels => new List<string> { "host", "service", "outcome" };
 
@@ -90,36 +88,6 @@ namespace Mcg.Webservice.Api.Infrastructure.Instrumentation
         }
 
         /// <summary>
-        /// Increments the given counter with the given label values.
-        /// </summary>
-        public void IncGauge(string gaugeName)
-        {
-            try
-            {
-                Gauges[gaugeName].Inc();
-            }
-            catch (Exception ex)
-            {
-                LogException(nameof(IncCounter), ex);
-            }
-        }
-
-        /// <summary>
-        /// Increments the given counter with the given label values.
-        /// </summary>
-        public void DecGauge(string gaugeName)
-        {
-            try
-            {
-                Gauges[gaugeName].Dec();
-            }
-            catch (Exception ex)
-            {
-                LogException(nameof(DecGauge), ex);
-            }
-        }
-
-        /// <summary>
         /// Ensures that counters are added as needed and only one time during the lifetime of the application.
         /// </summary>
         /// <param name="owningType">The name of the type that ownes the target method.</param>
@@ -153,23 +121,14 @@ namespace Mcg.Webservice.Api.Infrastructure.Instrumentation
                                 LabelNames = DefaultLabels.ToArray()
                             }));
 
-                    Histograms.Add($"{prefix}_elapsed_microseconds",
+                    Histograms.Add($"{prefix}_elapsed_ms",
                         Prometheus.Metrics.CreateHistogram(
-                            $"{prefix}_elapsed_microseconds",
+                            $"{prefix}_elapsed_ms",
                             null,
                             new HistogramConfiguration
                             {
                                 Buckets = new double[] { 1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024, 2048, 4096, 4096 * 2, 4096 * 4, 4096 * 8 },
                                 LabelNames = DefaultLabels.ToArray()
-                            }));
-
-                    Gauges.Add($"{prefix}_gauge",
-                        Prometheus.Metrics.CreateGauge(
-                            $"{prefix}_gauge",
-                            null,
-                            new GaugeConfiguration
-                            {
-                                LabelNames = new[] { "host", "service" }
                             }));
                 }
                 catch (Exception ex)

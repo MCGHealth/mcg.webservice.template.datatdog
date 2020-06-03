@@ -1,16 +1,15 @@
 ﻿using System;
-using Newtonsoft.Json;
 
 namespace Mcg.Webservice.Api.Models
 {
-    /// <summary>
-    /// Represents a domain model that is used by the service.
-    /// </summary>
-    /// <remarks>
-    /// This is merely an example implementation.  It can be reused or deleted as needed.
-    /// </remarks>
-    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
-    public class ExampleModel : IEquatable<ExampleModel>
+	/// <summary>
+	/// Represents a domain model that is used by the service.
+	/// </summary>
+	/// <remarks>
+	/// This is merely an example implementation.  It can be reused or deleted as needed.
+	/// </remarks>
+	[System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
+    public class UserModel : IEquatable<UserModel>
     {
         /// <summary>
         /// Gets or sets the identifier.
@@ -39,7 +38,7 @@ namespace Mcg.Webservice.Api.Models
         ///</remarks>
         /// <param name="other">The value to compare against.</param>
         /// <returns></returns>
-        public bool Equals(ExampleModel other)
+        public bool Equals(UserModel other)
         {
             if (other == null) { return false; }
 
@@ -52,7 +51,7 @@ namespace Mcg.Webservice.Api.Models
 
         public override bool Equals(object obj)
         {
-            return this.Equals(obj as ExampleModel);
+            return this.Equals(obj as UserModel);
         }
 
         public override int GetHashCode()

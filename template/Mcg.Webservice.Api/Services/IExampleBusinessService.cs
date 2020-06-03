@@ -5,11 +5,11 @@ namespace Mcg.Webservice.Api.Services
 {
     public interface IExampleBusinessService
     {
-        (bool ok, string error) Delete(ExampleModel model);
-        (bool ok, string error, ExampleModel newModel) Insert(ExampleModel model);
-        IEnumerable<ExampleModel> SelectAll();
-        ExampleModel SelectByEmail(string email);
-        ExampleModel SeledtById(int id);
-        (bool ok, string error) Update(ExampleModel model);
+        (bool ok, string error) Delete(UserModel model);
+        (bool ok, string error, UserModel newModel) Insert(UserModel model);
+        IEnumerable<UserModel> SelectAll();
+        UserModel SelectByEmail(string email);
+        UserModel SeledtById(int id);
+        (bool ok, string error) Update(UserModel model);
     }
 }

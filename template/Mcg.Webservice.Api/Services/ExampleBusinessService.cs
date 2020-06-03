@@ -8,18 +8,17 @@ using Mcg.Webservice.Api.Models;
 
 namespace Mcg.Webservice.Api.Services
 {
-	[System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
-    public class ExampleBusinessService: IExampleBusinessService
+    [Trace, Metrics, Log]
+    public class UserBusinessService : IExampleBusinessService
     {
         internal IExampleDataRepository DataAccess { get; set; }
 
-        public ExampleBusinessService(IExampleDataRepository dataAccess)
+        public UserBusinessService(IExampleDataRepository dataAccess)
         {
             DataAccess = dataAccess ?? throw new ArgumentNullException(nameof(dataAccess));
         }
 
-        [Trace, Instrument, Log]
-        public (bool ok, string error) Delete(ExampleModel model)
+        public (bool ok, string error) Delete(UserModel model)
         {
             if (model == null)
             {
@@ -31,8 +30,7 @@ namespace Mcg.Webservice.Api.Services
             return (ok: true, error: null);
         }
 
-        [Trace, Instrument, Log]
-        public (bool ok, string error, ExampleModel newModel) Insert(ExampleModel model)
+        public (bool ok, string error, UserModel newModel) Insert(UserModel model)
         {
             if (DataAccess.Contains(model.ID))
             {
@@ -54,26 +52,22 @@ namespace Mcg.Webservice.Api.Services
             return (ok: true, error: null, model);
         }
 
-        [Trace, Instrument, Log]
-        public IEnumerable<ExampleModel> SelectAll()
+        public IEnumerable<UserModel> SelectAll()
         {
             return DataAccess.SelectAll();
         }
 
-        [Trace, Instrument, Log]
-        public ExampleModel SelectByEmail(string email)
+        public UserModel SelectByEmail(string email)
         {
             return DataAccess.SelectOneByEmail(email);
         }
 
-        [Trace, Instrument, Log]
-        public ExampleModel SeledtById(int id)
+        public UserModel SeledtById(int id)
         {
             return DataAccess.SelectOneById(id);
         }
 
-        [Trace, Instrument, Log]
-        public (bool ok, string error) Update(ExampleModel model)
+        public (bool ok, string error) Update(UserModel model)
         {
             if (!DataAccess.Contains(model.ID))
             {

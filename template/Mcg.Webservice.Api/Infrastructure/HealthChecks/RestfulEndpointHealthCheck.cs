@@ -2,20 +2,19 @@
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
-using Mcg.Webservice.Api.Infrastructure.Instrumentation;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Newtonsoft.Json;
 
 namespace Mcg.Webservice.Api.Infrastructure.HealthChecks
 {
-    /// <summary>
-    /// Creates a health check for a restful endpoint that this one depends upon.
-    /// </summary>
-    /// <remarks>
-    /// Aligns with core principle https://mcghealth.atlassian.net/wiki/spaces/ARC/pages/361431168/03.04+Health+Reporting+and+Alerts
-    /// </remarks>
-    public class RestfulEndpointHealthCheck : IHealthCheck
+	/// <summary>
+	/// Creates a health check for a restful endpoint that this one depends upon.
+	/// </summary>
+	/// <remarks>
+	/// Aligns with core principle https://mcghealth.atlassian.net/wiki/spaces/ARC/pages/361431168/03.04+Health+Reporting+and+Alerts
+	/// </remarks>
+	public class RestfulEndpointHealthCheck : IHealthCheck
     {
         internal static Task WriteResponse(HttpContext httpContext, HealthReport result)
         {
@@ -59,7 +58,6 @@ namespace Mcg.Webservice.Api.Infrastructure.HealthChecks
             DependencyUri = client.BaseAddress;
         }
 
-        [Instrument]
         public async Task<HealthCheckResult> CheckHealthAsync(HealthCheckContext context, CancellationToken cancellationToken = default)
         {
             HealthCheckResult result;
