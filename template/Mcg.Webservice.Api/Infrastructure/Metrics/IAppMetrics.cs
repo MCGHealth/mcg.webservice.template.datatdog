@@ -10,9 +10,5 @@
         void IncCounter(string counterName, bool success = true);
 
         void IncHistogram(string histogramName, double value, bool success = true);
-
-        void IncGauge(string gaugeName);
-
-        void DecGauge(string gaugeName);
     }
 }

@@ -14,9 +14,9 @@ namespace Mcg.Webservice.UnitTests
     [SetUpFixture]
     internal static class Helpers
     {
-        internal static ExampleModel TestModel => new ExampleModel() { EmailAddress = "unit@test.cs", ID = 42, Username = "Testy McTestFace" };
+        internal static UserModel TestModel => new UserModel() { EmailAddress = "unit@test.cs", ID = 42, Username = "Testy McTestFace" };
 
-        internal static ExampleModel NullModel => null;
+        internal static UserModel NullModel => null;
 
         internal static IExampleDataRepository MockExampleDataAccess()
         {
@@ -49,11 +49,11 @@ namespace Mcg.Webservice.UnitTests
                     }
                 });
 
-            da.Setup(b => b.Insert(It.IsAny<ExampleModel>()));
+            da.Setup(b => b.Insert(It.IsAny<UserModel>()));
 
-            da.Setup(b => b.Update(It.IsAny<ExampleModel>()));
+            da.Setup(b => b.Update(It.IsAny<UserModel>()));
 
-            da.Setup(b => b.Delete(It.IsAny<ExampleModel>()));
+            da.Setup(b => b.Delete(It.IsAny<UserModel>()));
 
             da.Setup(b => b.NextId()).Returns(43);
 
@@ -92,8 +92,8 @@ namespace Mcg.Webservice.UnitTests
                     }
                 });
 
-            buslog.Setup(b => b.Insert(It.IsAny<ExampleModel>()))
-                .Returns((ExampleModel newModel) =>
+            buslog.Setup(b => b.Insert(It.IsAny<UserModel>()))
+                .Returns((UserModel newModel) =>
                 {
                     if (newModel.Equals(TestModel))
                     {
@@ -105,8 +105,8 @@ namespace Mcg.Webservice.UnitTests
                     }
                 });
 
-            buslog.Setup(b => b.Update(It.IsNotNull<ExampleModel>()))
-                 .Returns((ExampleModel newModel) =>
+            buslog.Setup(b => b.Update(It.IsNotNull<UserModel>()))
+                 .Returns((UserModel newModel) =>
                  {
                      if (newModel.Equals(TestModel))
                      {
@@ -118,7 +118,7 @@ namespace Mcg.Webservice.UnitTests
                      }
                  });
 
-            buslog.Setup(b => b.Delete(It.IsNotNull<ExampleModel>())).Returns((true, null));
+            buslog.Setup(b => b.Delete(It.IsNotNull<UserModel>())).Returns((true, null));
 
 
             var mock = buslog.Object;

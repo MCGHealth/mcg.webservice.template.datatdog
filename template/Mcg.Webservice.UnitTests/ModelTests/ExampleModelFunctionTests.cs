@@ -8,7 +8,7 @@ namespace Mcg.Webservice.UnitTests.ModelTests
     [TestFixture]
     public class ExampleModelFunctionTests
     {
-        private ExampleModel control => new ExampleModel() { ID = 42, Username = "ArthurD", EmailAddress = "Ard@magrathea.com" };
+        private UserModel control => new UserModel() { ID = 42, Username = "ArthurD", EmailAddress = "Ard@magrathea.com" };
         
         [TestCase(1, "user_1", "email_1@mcg.win", false)]
         [TestCase(42, "user_2", "email_2@mcg.win", true)]
@@ -16,7 +16,7 @@ namespace Mcg.Webservice.UnitTests.ModelTests
         [TestCase(1, "user_3", "Ard@magrathea.com", true)]
         public void Equals_returns_the_correct_value(int id, string username, string email, bool expectedResult)
         {
-            ExampleModel other = new ExampleModel() { ID = id, Username = username, EmailAddress = email };
+            UserModel other = new UserModel() { ID = id, Username = username, EmailAddress = email };
 
             _ = control.Equals(other).Should().Be(expectedResult);
         }
@@ -32,7 +32,7 @@ namespace Mcg.Webservice.UnitTests.ModelTests
         [Test]
         public void Equals_returns_false_if_other_is_null()
         {
-            ExampleModel other = null;
+            UserModel other = null;
 
             _ = control.Equals(other).Should().Be(false);
         }

@@ -25,7 +25,7 @@ namespace Mcg.Webservice.Api
 				{
 					config.MinimumLevel.Override("Microsoft", LogEventLevel.Fatal)
 						  .MinimumLevel.Override("System", LogEventLevel.Fatal)
-						  .Enrich.FromLogContext()
+						  .Enrich.WithRequestEnricher()
 						  .WriteTo.Console(new JsonLogFormatter());
 
 					_ = GetLogLevel() switch

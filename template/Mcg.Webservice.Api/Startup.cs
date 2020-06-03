@@ -12,7 +12,7 @@ using Prometheus;
 
 namespace Mcg.Webservice.Api
 {
-	[System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     public class Startup
     {
         public Startup(IConfiguration configuration)
@@ -27,10 +27,12 @@ namespace Mcg.Webservice.Api
             services.AddControllers()
                 .AddNewtonsoftJson();
 
+            services.AddHttpContextAccessor();
+
             services.AddSingleton<IAppSettings, AppSettings>();
             services.AddSingleton<IAppMetrics, AppMetrics>();
-            services.AddSingleton<IExampleDataRepository, ExampleDataRepository>();
-            services.AddTransient<IExampleBusinessService, ExampleBusinessService>();
+            services.AddSingleton<IExampleDataRepository, UserDataRepository>();
+            services.AddTransient<IExampleBusinessService, UserBusinessService>();
 
             services.AddServiceHealthChecks();
             services.AddDistributedTracing();
@@ -42,7 +44,7 @@ namespace Mcg.Webservice.Api
             AspectFactory.Metrics = app.ApplicationServices.GetService<IAppMetrics>();
             AspectFactory.Settings = app.ApplicationServices.GetService<IAppSettings>();
 
-			app.UseRouting();
+            app.UseRouting();
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
@@ -53,10 +55,8 @@ namespace Mcg.Webservice.Api
 
             //--> see https://github.com/prometheus-net/prometheus-net/blob/master/README.md for more details
             app.UseMetricServer(url: "/ops/metrics");
-            app.UseHttpMetrics();
 
-
-			app.UseCors(options =>
+            app.UseCors(options =>
             {
                 /************************************************************************
                  * WARNING!!! The development configuration is set to '*' and should NOT
