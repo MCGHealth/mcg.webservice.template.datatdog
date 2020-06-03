@@ -1,4 +1,4 @@
-FROM mcr.microsoft.com/dotnet/core/sdk:3.1-alpine3.10 AS build
+FROM mcr.microsoft.com/dotnet/core/sdk:3.1-alpine AS build
 
 WORKDIR /app
 
@@ -8,9 +8,9 @@ COPY *.csproj ./
 RUN dotnet restore
 
 COPY . ./
-RUN dotnet publish -r linux-musl-x64 -c Release -o publish
+RUN dotnet publish -r linux-musl-x64 -f netcoreapp3.1 -c Release -o publish
 
-FROM mcr.microsoft.com/dotnet/core/aspnet:3.1-alpine3.10 AS publish
+FROM mcr.microsoft.com/dotnet/core/aspnet:3.1-alpine AS publish
 
 LABEL "com.datadoghq.ad.check_names"='["openmetrics"]'
 LABEL "com.datadoghq.ad.init_configs"='[{}]'
