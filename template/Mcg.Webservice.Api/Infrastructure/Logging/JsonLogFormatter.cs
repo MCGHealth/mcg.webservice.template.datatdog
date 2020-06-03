@@ -38,7 +38,7 @@ namespace Mcg.Webservice.Api.Infrastructure.Logging
 			if (output == null) throw new ArgumentNullException(nameof(output));
 			if (valueFormatter == null) throw new ArgumentNullException(nameof(valueFormatter));
 
-			output.Write("{\"@timestamp\":\"");
+			output.Write("{\"timestamp\":\"");
 			output.Write(logEvent.Timestamp.UtcDateTime.ToString("O"));
 			output.Write("\"");
 
@@ -47,7 +47,10 @@ namespace Mcg.Webservice.Api.Infrastructure.Logging
 				.Where(pt => pt.Format != null);
 
 			output.Write(",\"level\":\"");
-			output.Write(logEvent.Level.ToString().ToLower());
+
+			//--> limiting the size of the level value to help reduce the overall size of the log
+			//    entry without making it too terse.
+			output.Write(logEvent.Level.ToString().ToUpper().Substring(0, 3));
 			output.Write('\"');
 
 			foreach (var property in logEvent.Properties)

@@ -44,4 +44,7 @@
 	  <ProjectReference Include="..\Mcg.Webservice.Api\Mcg.Webservice.Api.csproj" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <Folder Include="InfrastructureTests\LoggingTests\" />
+	</ItemGroup>
 </Project>
