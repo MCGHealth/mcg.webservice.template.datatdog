@@ -1,7 +1,6 @@
-﻿using Datadog.Trace.OpenTracing;
+﻿using Datadog.Trace;
+using Datadog.Trace.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using OpenTracing;
-using OpenTracing.Util;
 
 namespace Mcg.Webservice.Api.Infrastructure.Tracing
 {
@@ -10,13 +9,16 @@ namespace Mcg.Webservice.Api.Infrastructure.Tracing
 	/// </summary>
 	public static class TracingServicesExtension
     {
-		public static void AddDistributedTracing(this IServiceCollection services)
-		{
-			ITracer tracer = OpenTracingTracerFactory.CreateTracer();
+        public static void AddDistributedTracing(this IServiceCollection services)
+        {
+            var settings = TracerSettings.FromDefaultSources();
 
-			services.AddSingleton<ITracer>(tracer);
+            settings.Integrations["AdoNet"].Enabled = false;
 
-			GlobalTracer.Register(tracer);
-		}
-	}
+            var tracer = new Tracer(settings);
+
+            // set the global tracer
+            Tracer.Instance = tracer;
+        }
+    }
 }
