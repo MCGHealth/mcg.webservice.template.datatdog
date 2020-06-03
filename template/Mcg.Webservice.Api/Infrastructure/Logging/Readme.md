@@ -4,6 +4,6 @@
 
 | **File**                                                     | **Description**                                                                                                 |
 | ------------------------------------------------------------ | --------------------------------------------------------------------------------------------------------------- |
-| [HttpEventData.cs](./HttpEventData.cs)                       | Used by the RequestLoggingMiddleware to ensure that all reqired information about a request/response is logged. |
+| [JsonLogFormatter.cs](./JsonLogFormatter.cs)                       | A custom JSON log formatter to ensure the log entry is formatted as efficiently as possible.Ï |
 | [LogAttribute.cs](./LogAttribute.cs)                         | Initializes the logging infrastructure required by the application.                                             |
-| [RequestLoggingMiddleware.cs](./RequestLoggingMiddleware.cs) | Ensures that all incoming HTTP requests and responses are logged.                                               |
+| [RequestEnricher.cs](./RequestEnricher.cs) | Ensures that all logs can be correlated back to a request.                                               |
