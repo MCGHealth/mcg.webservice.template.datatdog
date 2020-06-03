@@ -20,13 +20,9 @@ namespace Mcg.Webservice.Api.Controllers
     public class UserController : ControllerBase
     {
         internal IExampleBusinessService Logic { get; }
-
-        internal IAppSettings Settings { get; }
-
         public UserController(IExampleBusinessService busLogic, IAppSettings settings)
         {
             this.Logic = busLogic ?? throw new ArgumentNullException(nameof(busLogic));
-            this.Settings = settings ?? throw new ArgumentNullException(nameof(settings));
         }
 
         [HttpGet]
