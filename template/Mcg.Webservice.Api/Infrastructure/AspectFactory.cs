@@ -8,7 +8,7 @@ namespace Mcg.Webservice.Api.Infrastructure
 {
 	public class AspectFactory
 	{
-		internal static double TickPerMicrosecond => (double)(TimeSpan.TicksPerMillisecond)* 1000D;
+		internal static double TickPerMicrosecond => (double)(TimeSpan.TicksPerMillisecond) * 1000D;
 
 		internal static Type VoidTaskResult => Type.GetType("System.Threading.Tasks.VoidTaskResult");
 

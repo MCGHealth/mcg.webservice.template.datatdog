@@ -2,23 +2,19 @@
 using System.Reflection;
 using System.Threading.Tasks;
 using AspectInjector.Broker;
+using Datadog.Trace;
 using Mcg.Webservice.Api.Infrastructure.Configuration;
-using OpenTracing;
-using OpenTracing.Tag;
-using OpenTracing.Util;
 
 namespace Mcg.Webservice.Api.Infrastructure.Tracing
 {
-    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
-    [AttributeUsage(AttributeTargets.Method)]
+    [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method)]
     [Injection(typeof(TraceAspect))]
     public sealed class TraceAttribute : Attribute { }
 
     /// <summary>
     /// Adds distributed tracing to the decorated method.
     /// </summary>
-    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
-    [Aspect(Scope.Global, Factory = typeof(AspectFactory))]
+    [Aspect(AspectInjector.Broker.Scope.Global, Factory = typeof(AspectFactory))]
     public class TraceAspect
     {
         private static readonly MethodInfo AsyncHandler = typeof(TraceAspect)
@@ -55,41 +51,47 @@ namespace Mcg.Webservice.Api.Infrastructure.Tracing
 
         private static T WrapSync<T>(string eventName, Func<object[], object> target, object[] args)
         {
-			ITracer tracer = GlobalTracer.Instance;
 
-			using IScope scope = tracer.BuildSpan(eventName)
-				.WithTag("machine", Environment.MachineName)
-				.WithTag(Tags.Component.Key, AppSettings.ServiceName)
-				.StartActive(true);
-			try
+            using (var scope = Tracer.Instance.StartActive("web.request"))
             {
-                var result = (T)target(args);
-                return result;
-            }
-            catch
-            {
-				Tags.Error.Set(scope.Span, true);
-				throw;
+                var span = scope.Span;
+                span.Type = SpanTypes.Custom;
+                span.ResourceName = eventName;
+                span.SetTag("machine", Environment.MachineName);
+                span.SetTag("service", AppSettings.ServiceName);
+                try
+                {
+                    var result = (T)target(args);
+                    return result;
+                }
+                catch (Exception ex)
+                {
+                    span.SetException(ex);
+                    throw;
+                }
             }
         }
 
         private static async Task<T> WrapAsync<T>(string eventName, Func<object[], object> target, object[] args)
         {
-            ITracer tracer = GlobalTracer.Instance;
+            using (var scope = Tracer.Instance.StartActive("web.request"))
+            {
+                var span = scope.Span;
+                span.Type = SpanTypes.Custom;
+                span.ResourceName = eventName;
+                span.SetTag("machine", Environment.MachineName);
+                span.SetTag("service", AppSettings.ServiceName);
 
-			using IScope scope = tracer.BuildSpan(eventName)
-				.WithTag("machine", Environment.MachineName)
-				.WithTag(Tags.Component.Key, AppSettings.ServiceName)
-				.StartActive(true);
-			try
-            {
-                var result = await (Task<T>)target(args);
-                return result;
-            }
-            catch
-            {
-				Tags.Error.Set(scope.Span, true);
-				throw;
+                try
+                {
+                    var result = await (Task<T>)target(args);
+                    return result;
+                }
+                catch (Exception ex)
+                {
+                    span.SetException(ex);
+                    throw;
+                }
             }
         }
     }
