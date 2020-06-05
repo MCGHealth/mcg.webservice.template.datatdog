@@ -30,7 +30,7 @@ services:
   ###########################################################
 
   netcore-svc:
-    build: Mcg.Webservice.Api/.
+    build: template.api/.
     container_name: netcore-svc
     hostname: netcore-svc
     networks: 

@@ -94,12 +94,12 @@ dotnet new mcgdd -o Acme.Example -n Acme.Example
 ## Run the solution
 
 
-Be sure to update the environment key to your DataDog api key in the [launchSettings.json](template/Mcg.WebService.Api/Properties/../../Mcg.Webservice.Api/Properties/launchSettings.json) on line 8:
+Be sure to update the environment key to your DataDog api key in the [launchSettings.json](template/template.api/Properties/../../template.api/Properties/launchSettings.json) on line 8:
 
 ``` json
 {
   "profiles": {
-    "Mcg.Webservice.Api": {
+    "template.api": {
       "commandName": "Project",
       "launchBrowser": true,
       "launchUrl": "swagger",
