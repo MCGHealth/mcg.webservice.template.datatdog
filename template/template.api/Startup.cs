@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Prometheus;
 using template.Api.DataAccess;
 using template.Api.Infrastructure;
 using template.Api.Infrastructure.Configuration;
@@ -49,9 +48,6 @@ namespace template.Api
 
             app.UseSwaggerDocumentation();
             app.UseServiceHealthChecks();
-
-            //--> see https://github.com/prometheus-net/prometheus-net/blob/master/README.md for more details
-            app.UseMetricServer(url: "/ops/metrics");
 
             app.UseCors(options =>
             {
