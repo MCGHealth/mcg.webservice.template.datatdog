@@ -1,16 +1,16 @@
 ﻿{
   "$schema": "http://json.schemastore.org/template",
   "author": "Jeremy K. Johnson, MCG Health, LLC.",
-  "classifications": ["Web", "WebAPI", "REST"],
-  "name": "MCG's ASP.NET Core Web API -- DataDog",
-  "defaultName": "Mcg.Webservice.DataDog",
-  "identity": "Mcg.Webservice.DataDog.CSharp",
+  "classifications": ["Web", "WebAPI", "REST", "C#8", "Datadog"],
+  "name": "ASP.NET Core Web API -- Datadog",
+  "defaultName": "Datadog.Default",
+  "identity": "Templates.Datadog.CSharp",
   "tags": {
     "language": "C#",
     "type": "project"
   },
-  "shortName": "mcgdd",
-  "sourceName": "Mcg.Webservice",
+  "shortName": "webapidd",
+  "sourceName": "template",
   "preferNameDirectory": true,
   "sources": [
     {

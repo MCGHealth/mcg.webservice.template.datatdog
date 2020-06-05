@@ -1,0 +1,16 @@
+{
+  "profiles": {
+    "template.api": {
+      "commandName": "Project",
+      "launchBrowser": true,
+      "launchUrl": "swagger",
+      "environmentVariables": {
+        "DD_API_KEY": "[enter your key]",
+        "APP_LOG_LEVEL": "information",
+        "APP_CORS_ALLOWED_URLS": "*",
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      },
+      "applicationUrl": "http://localhost:8080"
+    }
+  }
+}

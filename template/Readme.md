@@ -1,4 +1,4 @@
-﻿# Mcg.Webservice.Api Solution
+﻿# template.api Solution
 
 ## Prerequisites (Windows Only)
 
@@ -27,7 +27,7 @@
 - **[Dotnet Core 3.1 SDK](https://dotnet.microsoft.com/download/dotnet-core/3.1)**: This is the SDK used to build the solution.
 - **[Coverlet](https://github.com/tonerdo/coverlet?WT.mc_id=-blog-scottha#coverlet)**: This will calculate code coverage when using the `make test` command.
 
-  ```shell
+  ```Powershell
    Windows PowerShell
    Copyright (C) Microsoft Corporation. All rights reserved.
 
@@ -42,25 +42,25 @@
 
 ## Solution Structure
 
-| **Solution Items**                                                                   | **Description**                                                                                                                 |
-| ------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------- |
-| **[Mcg.Webservice.Cncf.Api](./Mcg.Webservice.Cncf.Api/Readme.md)**                     | This is the core project; the project that will produce the deliverable to be deployed.                                         |
-| **[Mcg.Webservice.Cncf.UnitTests](./Mcg.Webservice.Cncf.UnitTests/Readme.md)** | This project, as the name suggests, are the **_unit tests_** for the project.                                                   |
-| [Makefile](./Makefile)                                                               | This file contains several commandline make command to make compiling, testing, and running the solution easier.                |
-| [docker-compose.yml](./docker-compose.yml)                                           | Invoke `docker-compose up` in the solution root to launch the solution in a container along with the other supporting services. |
-|                                                                                      |                                                                                                                                 |
+| **Solution Items**                                              | **Description**                                                                                                                      |
+| --------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------ |
+| [template.api](./Mcg.Webservice.Cncf.Api/Readme.md)             | This is the core project; the project that will produce the deliverable to be deployed.                                              |
+| [templage.unittests](./Mcg.Webservice.Cncf.UnitTests/Readme.md) | This project, as the name suggests, are the **_unit tests_** for the project.                                                        |
+| [Makefile](./Makefile)                                          | This file contains several commandline make command to make compiling, testing, and running the solution easier.                     |
+| [docker-compose.yml](./docker-compose.yml)                      | Invoke `docker-compose up` in the solution root to launch the solution in a container along with the other supporting Datadog Agent. |
+|                                                                 |                                                                                                                                      |
 
 ## Make Commands
 
-| **Command**    | **Description**                                                                                               |
-| -------------- | ------------------------------------------------------------------------------------------------------------- |
-| `make`         | The default action. Causes the project to be cleaned and re-build                                             |
-| `make clean`   | Deletes the previous build                                                                                    |
-| `make restore` | Restores any missing packages                                                                                 |
-| `make build`   | Cleans, restores, builds, then launches the output binary.                                                    |
-| `make run`     | Cleans, restores, and builds a binary.                                                                        |
-| `make test`    | Cleans, restores, builds, and executes the unit tests.                                                        |
-| `make publish` | Publishes a binary build for musl (Alpine) linux                                                              |
-|                |                                                                                                               |
+| **Command**    | **Description**                                                   |
+| -------------- | ----------------------------------------------------------------- |
+| `make`         | The default action. Causes the project to be cleaned and re-build |
+| `make clean`   | Deletes the previous build                                        |
+| `make restore` | Restores any missing packages                                     |
+| `make build`   | Cleans, restores, builds, then launches the output binary.        |
+| `make run`     | Cleans, restores, and builds a binary.                            |
+| `make test`    | Cleans, restores, builds, and executes the unit tests.            |
+| `make publish` | Publishes a binary build for musl (Alpine) linux                  |
+|                |                                                                   |
 
  :warning: On Mac you may need to use **`gmake`** instead of **`make`**
