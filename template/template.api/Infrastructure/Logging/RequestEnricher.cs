@@ -1,5 +1,5 @@
 ﻿using System;
-using Mcg.Webservice.Api.Infrastructure.Configuration;
+using template.Api.Infrastructure.Configuration;
 using Datadog.Trace;
 using Microsoft.AspNetCore.Http;
 using Serilog;
@@ -7,7 +7,7 @@ using Serilog.Configuration;
 using Serilog.Core;
 using Serilog.Events;
 
-namespace Mcg.Webservice.Api.Infrastructure.Logging
+namespace template.Api.Infrastructure.Logging
 {
 	/// <summary>
 	/// An extension method that adds the enricher to the Serilog configuration.

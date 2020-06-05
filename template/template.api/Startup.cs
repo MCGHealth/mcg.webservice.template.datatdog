@@ -49,12 +49,6 @@ namespace template.Api
             app.UseSwaggerDocumentation();
             app.UseServiceHealthChecks();
 
-<<<<<<< HEAD:template/Mcg.Webservice.Api/Startup.cs
-            //--> see https://github.com/prometheus-net/prometheus-net/blob/master/README.md for more details
-            app.UseMetricServer(url: "/ops/metrics");
-
-=======
->>>>>>> feature/refinement:template/template.api/Startup.cs
             app.UseCors(options =>
             {
                 /************************************************************************

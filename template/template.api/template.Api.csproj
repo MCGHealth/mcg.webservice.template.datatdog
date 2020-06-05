@@ -3,7 +3,7 @@
 		<TargetFramework>netcoreapp3.1</TargetFramework>
 		<AspNetCoreHostingModel>InProcess</AspNetCoreHostingModel>
 		<AssemblyName>template.api</AssemblyName>
-		<RootNamespace>template.Api</RootNamespace>
+		<RootNamespace>template.api</RootNamespace>
 	</PropertyGroup>
 
 	<PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -13,6 +13,17 @@
 		<LangVersion>latestmajor</LangVersion>
 	</PropertyGroup>
 
+	<PropertyGroup Condition=" '$(RunConfiguration)' == 'Default' ">
+	  <StartAction>Project</StartAction>
+	  <EnvironmentVariables>
+	    <Variable name="DD_API_KEY" value="[enter your key]" />
+	    <Variable name="APP_LOG_LEVEL" value="information" />
+	    <Variable name="APP_CORS_ALLOWED_URLS" value="*" />
+	    <Variable name="ASPNETCORE_ENVIRONMENT" value="Development" />
+	  </EnvironmentVariables>
+	  <LaunchUrl>swagger</LaunchUrl>
+	  <ApplicationURL>http://localhost:8080</ApplicationURL>
+	</PropertyGroup>
 	<ItemGroup>
 		<PackageReference Include="AspectInjector" Version="2.3.1" />
 		<PackageReference Include="Datadog.Trace" Version="1.17.0" />
@@ -26,6 +37,8 @@
 		<PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
 		<PackageReference Include="OpenTracing" Version="0.12.1" />
 		<PackageReference Include="OpenTracing.Contrib.NetCore" Version="0.6.2" />
+		<PackageReference Include="prometheus-net" Version="3.5.0" />
+		<PackageReference Include="prometheus-net.AspNetCore" Version="3.5.0" />
 		<PackageReference Include="Serilog.AspNetCore" Version="3.2.0" />
 		<PackageReference Include="Serilog.Extensions.Hosting" Version="3.1.0" />
 		<PackageReference Include="Serilog.Sinks.Console" Version="3.1.1" />
